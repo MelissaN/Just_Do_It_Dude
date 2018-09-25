@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Landing</h1>
+<div class='container'>
+    <form method='POST' action=''>
+        {{ form.hidden_tag() }}
+        <div class="col align-self-center">
+            {% for goal in goals %}
+            <div>
+                {{ form.goal.label(class="form-control")}}
+                {{ form.goal }}
+            </div>
+            <div>
+                {{ form.deadline.label(class="form-control")}}
+                {{ form.deadline }}
+            </div>
+            <div>
+                {{ form.pledge.label(class="form-control") }}
+                {{ form.pledge }}
+            </div>
+            <div>
+                {{ form.partner.label(class="form-control") }}
+                {{ form.partner }}
+            </div>
+            <div>
+                {{ form.partner_email.label(class="form-control") }}
+                {{ form.partner_email() }}
+            </div>
+            <div class="btn btn-primary">
+                {{ form.submit.label() }}
+                {{ form.submit() }}
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+</div>
+<!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
+{% if all_pledges %}
+{% for pledge in all_pledges %}
+<br><br>
+<center>
+    <p>{{pledge.username}} will {{pledge.goal}} by {{pledge.deadline}} or {{pledge.pledge}}</p>
+</center>
+{% endfor %}
+{% endif %}
+{% endblock content %}
