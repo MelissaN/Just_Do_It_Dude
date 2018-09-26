@@ -17,12 +17,12 @@ app.url_map.strict_slashes = False
 app.config['SECRET_KEY'] = 'tehe'
 
 
-@app.errorhandler(404)
-def not_found(error):
-    """return custom 404 page
-       return render_template("custom_404.html")
-    """
-    pass
+# @app.errorhandler(404)
+# def not_found(error):
+#     """return custom 404 page
+#        return render_template("custom_404.html")
+#     """
+#     pass
 
 
 @app.route('/', methods=['GET'])
@@ -56,4 +56,5 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000", debug=True)
+    # app.run(host="0.0.0.0", port="5000", debug=True)
+    app.run(debug=True)

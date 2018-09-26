@@ -20,10 +20,10 @@ class DBStorage():
         """
            create engine and link to database
         """
-        user="root"
-        pw=""
-        host="localhost"
-        db="justdoitdude_dev_db"
+        user = "root"
+        pw = ""
+        host = "localhost"
+        db = "justdoitdude_dev_db"
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
             user, pw, host, db), pool_pre_ping=True)
         self.__session = Base.metadata.create_all(self.__engine)

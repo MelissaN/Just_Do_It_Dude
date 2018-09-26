@@ -3,8 +3,7 @@
 <h1>Landing</h1>
 <div class='container'>
     <form method='POST' action=''>
-      <p>hiiii</p>
-      {% if form %}
+        {% if form %}
         <div class="col align-self-center">
             <div>
                 {{ form.goal.label(class="form-control")}}
@@ -26,14 +25,15 @@
                 {{ form.partner_email.label(class="form-control") }}
                 {{ form.partner_email() }}
             </div>
-            <div class="btn btn-primary">
-                {{ form.submit.label() }}
+            <div>
+                {{ form.submit.label(class="form-control") }}
                 {{ form.submit() }}
             </div>
         </div>
-	{% endif %}
+        {% endif %}
     </form>
 </div>
+
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
 {% if all_records %}
 {% for rec in all_records %}

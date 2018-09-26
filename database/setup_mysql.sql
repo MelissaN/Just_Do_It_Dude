@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS goals(
        pledge VARCHAR(500) NOT NULL,
        PRIMARY KEY (goal)
 );
-INSERT INTO goals(goal, deadline, accountability_partner, partner_email, pledge) VALUES ("find a job", "November 20th, 2018", Amy, "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao");
+INSERT INTO goals(goal, deadline, accountability_partner, partner_email, pledge) VALUES ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao");
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users(
        first_name VARCHAR(255) NOT NULL,
