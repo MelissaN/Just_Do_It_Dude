@@ -14,7 +14,7 @@ class GoalForm(FlaskForm):
     deadline = DateField('End Date', validators=[DataRequired()])
     pledge = IntegerField('Pledge',
                           validators=[DataRequired()])
-    partner = StringField('Accountability Partner',
+    accountability_partner = StringField('Accountability Partner',
                           validators=[DataRequired(), Length(max=50)])
     partner_email = StringField('Partner Email',
                                 validators=[DataRequired(), Email()])

@@ -29,8 +29,8 @@ def not_found(error):
 def index():
     """return landing page with goal form"""
     form = GoalForm()
-    all_pledges = storage.all()
-    return render_template("landing.html", all_pledges=all_pledges.values(), form=form)
+    all_records = storage.all()
+    return render_template("landing.html", all_records=all_records.values(), form=form)
 
 
 @app.route('/', methods=['POST'])
@@ -38,15 +38,16 @@ def display_pledges():
     """return summary in response to form submission"""
     goal = request.form["goal"]
     deadline = request.form["deadline"]
+    accountability_partner = request.form["accountability_partner"]
+    partner_email = request.form["partner_email"]
     pledge = request.form["pledge"]
-    friends_email = request.form["friends_email"]
-    username = request.form["username"]
-    attributes = {"goal": goal, "deadline": deadline, "pledge": pledge,
-                  "friends_email": friends_email, "username": username}
+    attributes = {"goal": goal, "deadline": deadline,
+                  "accountability_partner": accountability_partner,
+                  "partner_email": partner_email, "pledge": pledge}
     obj = Goal(**attributes)
     storage.save(obj)
-    all_pledges = storage.all()
-    return render_template("landing.html", all_pledges=all_pledges.values())
+    all_records = storage.all()
+    return render_template("landing.html", all_records=all_records.values())
 
 
 @app.route("/home")

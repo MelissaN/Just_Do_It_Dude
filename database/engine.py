@@ -35,8 +35,11 @@ class DBStorage():
         """
            create new obj and save entry to db
         """
-        self.__session.add(obj)
-        self.__session.commit()
+        try:
+            self.__session.add(obj)
+            self.__session.commit()
+        except:
+            self.__session.rollback()
 
     def all(self):
         """
@@ -44,7 +47,7 @@ class DBStorage():
         """
         goal_dic = {}
         for obj in self.__session.query(Goal).all():
-            key = obj.username
+            key = obj.goal
             goal_dic[key] = obj
         return goal_dic
 

@@ -3,9 +3,9 @@
 <h1>Landing</h1>
 <div class='container'>
     <form method='POST' action=''>
-        {{ form.hidden_tag() }}
+      <p>hiiii</p>
+      {% if form %}
         <div class="col align-self-center">
-            {% for goal in goals %}
             <div>
                 {{ form.goal.label(class="form-control")}}
                 {{ form.goal }}
@@ -19,8 +19,8 @@
                 {{ form.pledge }}
             </div>
             <div>
-                {{ form.partner.label(class="form-control") }}
-                {{ form.partner }}
+                {{ form.accountability_partner.label(class="form-control") }}
+                {{ form.accountability_partner }}
             </div>
             <div>
                 {{ form.partner_email.label(class="form-control") }}
@@ -31,15 +31,15 @@
                 {{ form.submit() }}
             </div>
         </div>
-        {% endfor %}
+	{% endif %}
     </form>
 </div>
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
-{% if all_pledges %}
-{% for pledge in all_pledges %}
+{% if all_records %}
+{% for rec in all_records %}
 <br><br>
 <center>
-    <p>{{pledge.username}} will {{pledge.goal}} by {{pledge.deadline}} or {{pledge.pledge}}</p>
+    <p>Someone has pledged to {{rec.goal}} by {{rec.deadline}} or {{rec.pledge}}!</p>
 </center>
 {% endfor %}
 {% endif %}
