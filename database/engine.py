@@ -20,10 +20,10 @@ class DBStorage():
         """
            create engine and link to database
         """
-        user="root"
-        pw=""
-        host="localhost"
-        db="justdoitdude_dev_db"
+        user = "root"
+        pw = ""
+        host = "localhost"
+        db = "justdoitdude_dev_db"
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
             user, pw, host, db), pool_pre_ping=True)
         self.__session = Base.metadata.create_all(self.__engine)
@@ -35,8 +35,11 @@ class DBStorage():
         """
            create new obj and save entry to db
         """
-        self.__session.add(obj)
-        self.__session.commit()
+        try:
+            self.__session.add(obj)
+            self.__session.commit()
+        except:
+            self.__session.rollback()
 
     def all(self):
         """
@@ -44,7 +47,7 @@ class DBStorage():
         """
         goal_dic = {}
         for obj in self.__session.query(Goal).all():
-            key = obj.username
+            key = obj.goal
             goal_dic[key] = obj
         return goal_dic
 

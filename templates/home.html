@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Holla at da home page!</h1>
+<div>
+    <!-- DOUBLE CHECK HERE -->
+    {% with message = get_flashed_messages(message) %}
+    {% if message %}
+    {% for message in messages %}
+    <div class=flash_message>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock content %}

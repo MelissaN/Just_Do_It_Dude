@@ -2,7 +2,7 @@
 """
 Class Goal
 """
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -14,20 +14,18 @@ class Goal(Base):
 
     __tablename__ = "goals"
 
-    goal = Column(String(500), nullable=False)
-    deadline = Column(String(255), nullable=False)
-    friends_email = Column(String(255), nullable=False)
+    goal = Column(String(500), nullable=False, primary_key=True)
+    deadline = Column(Date(), nullable=False)
+    accountability_partner = Column(String(255), nullable=False)
+    partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
-    username = Column(String(50), nullable=False, primary_key=True)
-    password = Column(String(50))
 
     def __init__(self, **kwargs):
         """Initialize instance attributes"""
         self.goal = ""
         self.deadline = ""
-        self.friends_email = ""
+        self.accountability_partner = ""
+        self.partner_email = ""
         self.pledge = ""
-        self.username = ""
-        self.password = ""
         for k, v in kwargs.items():
             setattr(self, k, v)
