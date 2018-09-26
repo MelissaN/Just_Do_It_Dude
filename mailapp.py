@@ -12,7 +12,7 @@ import string
 
 
 app = Flask(__name__)
-#app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+# app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
 # security against modifying cookies and CSRF attacks
@@ -20,11 +20,17 @@ app.config['SECRET_KEY'] = 'tehe'
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = #<enter your email here in quotes>
-app.config['MAIL_PASSWORD'] = #<enter your emails password here in quotes>
+app.config['MAIL_USERNAME'] = os.environ.get('MY_EMAIL')
+app.config['MAIL_PASSWORD'] = os.environ.get('MY_EMAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
+
+
+def email_accountability_partner():
+    msg = Message('Hello from Just Do It Dude!', sender=(os.environ.get('MY_EMAIL')), recipients=[partner_email])
+    msg.body = "Dear " + accountability_partner + ", Woohoo! Starting now, your friend has a goal to " + goal + " by " + deadline + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
+    mail.send(msg)
 
 
 @app.errorhandler(404)
@@ -57,10 +63,7 @@ def display_pledges():
     obj = Goal(**attributes)
     storage.save(obj)
     all_records = storage.all()
-    msg = Message('Hello from Just Do It Dude!', sender=(<ENTER YOUR EMAIL HERE IN QUOTES>), recipients=[partner_email])
-    print(os.environ.get('MY_EMAIL'))
-    msg.body = "Woohoo! Starting now, your friend has a goal to " + goal + " by " + deadline + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
-    mail.send(msg)
+    # email_accountability_partner()
     return render_template("landing.html", all_records=all_records.values())
 
 
