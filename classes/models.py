@@ -19,7 +19,7 @@ class User(Base):
     first_name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
-    goals = relationship('Goal', backref='users', cascade='delete')
+    """goals = relationship('Goal', backref='users', cascade='delete')"""
 
     def __init__(self, *args, **kwargs):
         """
@@ -57,7 +57,7 @@ class Goal(Base):
     accountability_partner = Column(String(255), nullable=False)
     partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    """user_id = Column(Integer, ForeignKey('users.id'), nullable=False)"""
 
     def __init__(self, **kwargs):
         """Initialize instance attributes"""
