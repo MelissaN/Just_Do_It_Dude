@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """APP"""
 from classes import storage
-from classes.goal_class import Goal
-from classes.user_class import User
+from classes.models import Goal, User
 from flask import abort, Flask, jsonify, redirect, request, render_template, flash, url_for
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
@@ -32,7 +31,7 @@ mail = Mail(app)
 # flask-login
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-login_manager.login_message = 'Please sign in first'
+login_manager.login_message_category = 'Please sign in first'
 
 
 def email_accountability_partner():
@@ -82,11 +81,11 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         new_user = User(email=form.email.data,
-                        password=form.password.data, first_name=form.first_name.data,
-                        goal='eat a taco')
+                        password=form.password.data, first_name=form.first_name.data)
+
         storage.save(new_user)
         flash('Welcome!')
-        return redirect(url_for('landing'))
+        return redirect(url_for('home'))
     return render_template("register.html", form=form)
 
 
@@ -96,9 +95,13 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = storage.get_user(form.email)
-        if form.email.data == user.email and check_password_hash(user.password, form.password):
-            # flash(f'Hello {{ user.first_name }}')
+        user = storage.get_user(form.email.data)
+        print(user.password)
+        print(type(form.password.data))
+        print(check_password_hash(user.password, form.password.data))
+        if user and check_password_hash(user.password, form.password.data):
+            print(type(user.password))
+            login_user(user, remember=form.remember.data)
             return redirect(url_for('home'))
         else:
             flash("Invalid email or password, buddy")

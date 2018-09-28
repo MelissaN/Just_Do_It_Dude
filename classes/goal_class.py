@@ -2,7 +2,7 @@
 """
 Class Goal
 """
-from sqlalchemy import Column, String, Date
+from sqlalchemy import Column, String, Date, ForeignKey, Integer
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -19,6 +19,7 @@ class Goal(Base):
     accountability_partner = Column(String(255), nullable=False)
     partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     def __init__(self, **kwargs):
         """Initialize instance attributes"""
