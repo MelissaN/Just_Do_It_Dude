@@ -3,6 +3,7 @@
 DATABASE ENGINE FOR STORAGE
 """
 from classes.goal_class import Goal
+from classes.user_class import User
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -35,11 +36,11 @@ class DBStorage():
         """
            create new obj and save entry to db
         """
-        try:
-            self.__session.add(obj)
-            self.__session.commit()
-        except:
-            self.__session.rollback()
+        # try:
+        self.__session.add(obj)
+        self.__session.commit()
+        # except:
+        #     self.__session.rollback()
 
     def all(self):
         """
@@ -60,3 +61,14 @@ class DBStorage():
             return obj.goal
         except (IndexError, TypeError):
             return ""
+
+    def get_user(self, email):
+        """
+            return user info
+        """
+        try:
+            obj = self.__session.query(User).filter_by(email).first()
+            return obj
+        except TypeError:
+            print('Error at engine.get_user X____X')
+            return None

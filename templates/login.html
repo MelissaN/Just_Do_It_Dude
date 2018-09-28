@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class='container'>
+    <form method='POST' action=''>
+        {{ form.hidden_tag() }}
+        <div class="col align-self-center">
+            <div>
+                {{ form.email.label(class="form-control") }}
+                <!-- error -->
+                {% if form.email.errors %}
+                <div class='invalid-input'>
+                    {% for error in form.email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.email(class="form-control") }}
+                {% endif %}
+            </div>
+            <div>
+                {{ form.password.label(class="form-control") }}
+                <!-- error -->
+                {% if form.password.errors %}
+                <div class='invalid-input'>
+                    {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.password(class="form-control") }}
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

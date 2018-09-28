@@ -1,16 +1,24 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h1>Landing</h1>
 <div class='container'>
     <form method='POST' action=''>
         {% if form %}
+        {{ form.hidden_tag() }}
         <div class="col align-self-center">
             <div>
-                {{ form.goal.label(class="form-control")}}
+                {{ form.goal.label(class="form-control") }}
+                <!-- error -->
+                {% if form.goal.errors %}
+                <div class='invalid-input'>
+                    {% for error in form.goal.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
                 {{ form.goal }}
             </div>
             <div>
-                {{ form.deadline.label(class="form-control")}}
+                {{ form.deadline.label(class="form-control") }}
                 {{ form.deadline }}
             </div>
             <div>

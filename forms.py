@@ -9,21 +9,26 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 # python classes that auto convert to HTML forms in template
 class GoalForm(FlaskForm):
+    """
+    Form for creating goals
+    """
     goal = StringField('Goal',
                        validators=[DataRequired(), Length(max=100)])
     deadline = DateField('End Date', validators=[DataRequired()])
     pledge = IntegerField('Pledge',
                           validators=[DataRequired()])
     accountability_partner = StringField('Accountability Partner',
-                          validators=[DataRequired(), Length(max=50)])
+                                         validators=[DataRequired(), Length(max=50)])
     partner_email = StringField('Partner Email',
                                 validators=[DataRequired(), Email()])
     submit = SubmitField('Wooohoo!')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[
-                           DataRequired(), Length(min=4, max=20)])
+    """
+    Form for registering new users
+    """
+    first_name = StringField('First Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[
                              DataRequired(), Length(min=8)])
@@ -33,8 +38,10 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[
-                           DataRequired(), Length(min=4, max=20)])
-    password = StringField('Password', validators=[DataRequired()])
+    """
+    Form for signing in existing users
+    """
+    email = StringField('Email', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
