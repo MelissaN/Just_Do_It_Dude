@@ -16,6 +16,7 @@ DROP TABLE IF EXISTS goals;
 CREATE TABLE
 IF NOT EXISTS goals
 (
+       id INT UNIQUE NOT NULL AUTO_INCREMENT,
        goal VARCHAR
 (500) NOT NULL,
        deadline DATE,
@@ -25,32 +26,32 @@ IF NOT EXISTS goals
 (255) NOT NULL,
        pledge VARCHAR
 (500) NOT NULL,
+       start_date DATE,
        PRIMARY KEY
-(goal)
+(id)
 );
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge)
 VALUES
     ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao");
-DROP TABLE IF EXISTS users;
 CREATE TABLE
 IF NOT EXISTS users
 (
+       id INT UNIQUE NOT NULL AUTO_INCREMENT,
        first_name VARCHAR
 (255) NOT NULL,
        password VARCHAR
 (255) NOT NULL,
        email VARCHAR
 (255) NOT NULL,
-       goal VARCHAR
-(255) NULL,
+       goal_id INT,
        PRIMARY KEY
-(email),
+(id),
        FOREIGN KEY
-(goal) REFERENCES goals
-(goal)
+(goal_id) REFERENCES justdoitdude_dev_db.goals
+(id)
 );
 INSERT INTO users
-    (first_name, password, email, goal)
+    (first_name, password, email)
 VALUES
-    ("Melissa", "testpw", "cheersmelissa@gmail.com", "find a job");
+    ("Melissa", "testpw", "cheersmelissa@gmail.com");
