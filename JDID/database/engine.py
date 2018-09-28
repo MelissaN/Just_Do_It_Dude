@@ -2,7 +2,7 @@
 """
 DATABASE ENGINE FOR STORAGE
 """
-from classes.models import Goal, User
+from JDID.classes.models import Goal, User
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -70,4 +70,15 @@ class DBStorage():
             return obj
         except TypeError:
             print('Error at engine.get_user X____X')
+            return None
+
+    def get_user_by_id(self, user_id):
+        """
+            return user info
+        """
+        try:
+            obj = self.__session.query(User).filter_by(id=user_id).first()
+            return obj
+        except TypeError:
+            print('Error at engine.get_user_by_id X____X')
             return None

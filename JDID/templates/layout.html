@@ -15,7 +15,22 @@
 </head>
 
 <body>
-    {% block content %}{% endblock content%}
+    <main class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {% with msgs = get_flashed_messages(with_categories=true) %}
+                {% if msgs %}
+                {% for category, msg in msgs %}
+                <div class="alert alert-{{ category }}">
+                    {{ msg }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        {% block content %}{% endblock content%}
+    </main>
 </body>
 
 </html>
