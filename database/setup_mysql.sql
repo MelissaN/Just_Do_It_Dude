@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS goals(
        accountability_partner VARCHAR(255) NOT NULL,
        partner_email VARCHAR(255) NOT NULL,
        pledge VARCHAR(500) NOT NULL,
+       start_date DATE,
        PRIMARY KEY (goal)
 );
 INSERT INTO goals(goal, deadline, accountability_partner, partner_email, pledge) VALUES ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao");

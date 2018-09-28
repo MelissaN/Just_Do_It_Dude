@@ -2,6 +2,7 @@
 """
 Class Goal
 """
+from datetime import date
 from sqlalchemy import Column, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -19,6 +20,7 @@ class Goal(Base):
     accountability_partner = Column(String(255), nullable=False)
     partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
+    start_date = Column(Date(), nullable=False)
 
     def __init__(self, **kwargs):
         """Initialize instance attributes"""
@@ -27,5 +29,6 @@ class Goal(Base):
         self.accountability_partner = ""
         self.partner_email = ""
         self.pledge = ""
+        self.start_date = str(date.today())
         for k, v in kwargs.items():
             setattr(self, k, v)

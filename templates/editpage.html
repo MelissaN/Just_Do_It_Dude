@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<h1>User Dashboard: Edit Button Test</h1>
+<h3>Here are your goals:</h3>
+
+<script>
+
+function saveToDB() {
+  let elem = this;
+  let id = elem.getAttribute('id')
+  var editElem = document.getElementById("edit");
+  var updatedData = editElem.innerHTML;
+
+  let xhttp = new XMLHttpRequest();
+  let url = "http://localhost:5000/edit"
+  //console.log({info:url})
+  xhttp.onreadystatechange = function() {
+    //if (this.readyState == 4 && this.status == 200) {
+    // document.getElementById("edit").innerHTML = xhttp.responseText;
+    //}
+  }
+
+  xhttp.open("POST", url, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("test=" + updatedData);
+}
+</script>
+
+
+<!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
+{% if goal_objs_and_editability %}
+{% for goal_obj in goal_objs_and_editability %}
+<br>
+<center>
+    {% if goal_obj[1] == True %}<div id="put this in jinga goal_obj[0].id" contenteditable="true">{% else %}<div>{% endif %}{{goal_obj[0].goal}}</div>
+    {% if goal_obj[1] == True %}<input type="button" value="Update" onclick="saveToDB()"/>{% endif %}
+
+    {{goal_obj[0].deadline}} {% if goal_obj[1] == True %}<button><h5>Edit deadline</h5></button>{% endif %}
+    {{goal_obj[0].pledge}}! {% if goal_obj[1] == True %}<button><h5>Edit pledge</h5></button>{% endif %}</p>
+</center>
+{% endfor %}
+{% endif %}
+
+{% endblock content %}
