@@ -47,7 +47,7 @@ class DBStorage():
         """
         goal_dic = {}
         for obj in self.__session.query(Goal).all():
-            key = obj.goal
+            key = obj.id
             goal_dic[key] = obj
         return goal_dic
 

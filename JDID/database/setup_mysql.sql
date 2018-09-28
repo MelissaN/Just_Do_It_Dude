@@ -31,9 +31,9 @@ IF NOT EXISTS goals
 (id)
 );
 INSERT INTO goals
-    (goal, deadline, accountability_partner, partner_email, pledge)
+    (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao");
+    ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-10");
 CREATE TABLE
 IF NOT EXISTS users
 (
