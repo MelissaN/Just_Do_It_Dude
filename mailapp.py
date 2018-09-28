@@ -43,7 +43,17 @@ def email_accountability_partner():
         ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
     mail.send(msg)
 
-
+def is_goal_editable(goal_obj):
+    """return True if goal is longer than 5 days and less than a quarter towards deadline"""
+    today = date.today()
+    try:
+        duration = (goal_obj.deadline - goal_obj.start_date).days
+        editable_period = (duration//4)
+        if (duration > 5 and (goal_obj.start_date - today).days < editable_period):
+            return True
+    except:
+        return False
+    
 # @app.errorhandler(404)
 # def not_found(error):
     # """return custom 404 page
