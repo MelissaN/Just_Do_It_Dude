@@ -2,6 +2,7 @@
 """APP"""
 from classes import storage
 from classes.models import Goal, User
+from datetime import datetime, date
 from flask import abort, Flask, jsonify, redirect, request, render_template, flash, url_for
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
@@ -49,11 +50,12 @@ def is_goal_editable(goal_obj):
     try:
         duration = (goal_obj.deadline - goal_obj.start_date).days
         editable_period = (duration//4)
-        if (duration > 5 and (goal_obj.start_date - today).days < editable_period):
+        if (duration > 5 and (today - goal_obj.start_date).days < editable_period):
             return True
     except:
         return False
-    
+    return False
+
 # @app.errorhandler(404)
 # def not_found(error):
     # """return custom 404 page
@@ -129,6 +131,7 @@ def home():
 def edit():
     """return test page with edit button feature"""
     users_records = storage.all()
+    print(users_records)
     goal_objs_and_editability = list()
     for rec in users_records.values():
         goal_objs_and_editability.append((rec, is_goal_editable(rec)))
@@ -143,7 +146,7 @@ def update():
     req = request.form
     print("updated_goal is {}".format(req.get("updated_goal")))
     users_records = storage.all()
-    # test first record goal changed                                                                      
+    # test first record goal changed
     for rec in users_records.values():
         print(rec.goal)
         setattr(rec, 'goal', req.get('updated_goal'))
@@ -151,14 +154,14 @@ def update():
     return("editpage.html", 200)
 
 
-#@app.after_request                                                                                   
-#def handle_cors(response):                                                                               
-#"""cors"""                                                                                           
-# allow access from other domains                                                                     
-#response.headers.add('Access-Control-Allow-Origin', '*')                                             
-#response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')                   
-#response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')                  
-#return response  
+#@app.after_request
+#def handle_cors(response):
+#"""cors"""
+# allow access from other domains
+#response.headers.add('Access-Control-Allow-Origin', '*')
+#response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#return response
 
 
 if __name__ == "__main__":
