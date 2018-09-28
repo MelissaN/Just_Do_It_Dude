@@ -3,15 +3,25 @@
 Class User
 """
 from datetime import date
+from JDID import login_user
 from sqlalchemy import Column, String, Date, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from sqlalchemy.orm.session import object_session
+
 
 Base = declarative_base()
 
 
-class User(Base):
+@login_user.user_loader
+def find_user(user):
+    from JDID.classes import storage
+    return storage.get_user_by_id(user)
+
+
+class User(Base, UserMixin):
     """Class User is a blueprint to create user objects"""
 
     __tablename__ = "users"
@@ -20,7 +30,7 @@ class User(Base):
     first_name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
-    """goals = relationship('Goal', backref='users', cascade='delete')"""
+    # goals = relationship('Goal', backref='users', cascade='delete')
 
     def __init__(self, *args, **kwargs):
         """
@@ -40,10 +50,7 @@ class User(Base):
         """
             Encrypts password
         """
-        print(password)
         secure_pw = generate_password_hash(password)
-        print(type(secure_pw))
-        print(check_password_hash(secure_pw, password))
         setattr(self, 'password', secure_pw)
 
 
@@ -58,8 +65,8 @@ class Goal(Base):
     accountability_partner = Column(String(255), nullable=False)
     partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
-    start_date = Column(Date(), nullable=False)
-    """user_id = Column(Integer, ForeignKey('users.id'), nullable=False)"""
+    start_date = date.today()
+    # user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     def __init__(self, **kwargs):
         """Initialize instance attributes"""
@@ -68,6 +75,6 @@ class Goal(Base):
         self.accountability_partner = ""
         self.partner_email = ""
         self.pledge = ""
-        self.start_date = str(date.today())
+        self.start_date = date.today()
         for k, v in kwargs.items():
             setattr(self, k, v)

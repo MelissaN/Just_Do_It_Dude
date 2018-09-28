@@ -17,13 +17,18 @@ CREATE TABLE
 IF NOT EXISTS goals
 (
        id INT UNIQUE NOT NULL AUTO_INCREMENT,
-       goal VARCHAR(500) NOT NULL,
+       goal VARCHAR
+(500) NOT NULL,
        deadline DATE,
-       accountability_partner VARCHAR(255) NOT NULL,
-       partner_email VARCHAR(255) NOT NULL,
-       pledge VARCHAR(500) NOT NULL,
+       accountability_partner VARCHAR
+(255) NOT NULL,
+       partner_email VARCHAR
+(255) NOT NULL,
+       pledge VARCHAR
+(500) NOT NULL,
        start_date DATE,
-       PRIMARY KEY(id)
+       PRIMARY KEY
+(id)
 );
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
@@ -33,12 +38,18 @@ CREATE TABLE
 IF NOT EXISTS users
 (
        id INT UNIQUE NOT NULL AUTO_INCREMENT,
-       first_name VARCHAR(255) NOT NULL,
-       password VARCHAR(255) NOT NULL,
-       email VARCHAR(255) NOT NULL,
+       first_name VARCHAR
+(255) NOT NULL,
+       password VARCHAR
+(255) NOT NULL,
+       email VARCHAR
+(255) NOT NULL,
        goal_id INT,
-       PRIMARY KEY(id),
-       FOREIGN KEY(goal_id) REFERENCES justdoitdude_dev_db.goals(id)
+       PRIMARY KEY
+(id),
+       FOREIGN KEY
+(goal_id) REFERENCES justdoitdude_dev_db.goals
+(id)
 );
 INSERT INTO users
     (first_name, password, email)

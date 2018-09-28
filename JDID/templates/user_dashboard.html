@@ -2,19 +2,21 @@
 {% block content %}
 
 <h1>User Dashboard</h1>
-<h5>You can still tweak your goal if your goal is longer than 5 days and you're within a quarter along the way! Simply edit the goal and click update.</h5>
+<h5>You can still tweak your goal if your goal is longer than 5 days and you're within a quarter along the way! Simply
+  edit the goal and click update.</h5>
 
 <script>
 
-function saveToDB() {
+  function saveToDB() {
 //  let elem = this;
 //  let id = elem.getAttribute('id');
   var editElem = document.getElementById("edit");
   var updatedData = editElem.innerHTML;
+  console.log('udpateddata = ' + updatedData)
 
   let xhttp = new XMLHttpRequest();
-  let url = "http://localhost:5000/edit"
-  //console.log({info:url})
+  let url = "http://localhost:5000/dashboard"
+  console.log({info:url})
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("update_button").innerHTML = 'Saved!';
@@ -32,9 +34,11 @@ function saveToDB() {
 {% for goal_obj in goal_objs_and_editability %}
 <br>
 <center>
-    {% if goal_obj[1] == True %}<h5 id="edit" id="put this in jinga goal_obj[0].id" contenteditable="true">{% else %}<h5>{% endif %}{{goal_obj[0].goal}}</h5>
+  {% if goal_obj[1] == True %}<h5 id="edit" id="put this in jinga goal_obj[0].id" contenteditable="true">{% else %}<h5>{%
+      endif %}{{goal_obj[0].goal}}</h5>
     by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!
-    {% if goal_obj[1] == True %}<input id="update_button" type="button" value="Update" onclick="saveToDB()"/>{% endif %}<br><br>
+    {% if goal_obj[1] == True %}<input id="update_button" type="button" value="Update" onclick="saveToDB()" />{% endif
+    %}<br><br>
 </center>
 {% endfor %}
 {% endif %}
