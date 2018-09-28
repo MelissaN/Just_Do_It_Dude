@@ -3,6 +3,7 @@
 from classes import storage
 from classes.models import Goal, User
 from flask import abort, Flask, jsonify, redirect, request, render_template, flash, url_for
+from flask_cors import CORS
 from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
 from forms import GoalForm, RegistrationForm, LoginForm
@@ -16,6 +17,7 @@ from werkzeug.security import check_password_hash
 app = Flask(__name__)
 # app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
+#cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 # security against modifying cookies and CSRF attacks
 app.config['SECRET_KEY'] = 'tehe'
@@ -111,6 +113,42 @@ def login():
 @app.route("/home")
 def home():
     return render_template('home.html', title_page='Home')
+
+
+@app.route("/edit", methods=['GET'])
+def edit():
+    """return test page with edit button feature"""
+    users_records = storage.all()
+    goal_objs_and_editability = list()
+    for rec in users_records.values():
+        goal_objs_and_editability.append((rec, is_goal_editable(rec)))
+    print(goal_objs_and_editability)
+    return render_template('editpage.html', title_page='Edit',
+                           goal_objs_and_editability=goal_objs_and_editability)
+
+
+@app.route("/edit", methods=['POST'])
+def update():
+    """return test page with edit button feature"""
+    req = request.form
+    print("updated_goal is {}".format(req.get("updated_goal")))
+    users_records = storage.all()
+    # test first record goal changed                                                                      
+    for rec in users_records.values():
+        print(rec.goal)
+        setattr(rec, 'goal', req.get('updated_goal'))
+        storage.save(rec)
+    return("editpage.html", 200)
+
+
+#@app.after_request                                                                                   
+#def handle_cors(response):                                                                               
+#"""cors"""                                                                                           
+# allow access from other domains                                                                     
+#response.headers.add('Access-Control-Allow-Origin', '*')                                             
+#response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')                   
+#response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')                  
+#return response  
 
 
 if __name__ == "__main__":
