@@ -4,7 +4,8 @@ Module for Flask Forms
 """
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, PasswordField, BooleanField, DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from JDID.classes import storage
 
 
 # python classes that auto convert to HTML forms in template
@@ -35,6 +36,11 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm password', validators=[
                                      DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
+
+    def validate_email(self, user_email):
+        user_email = storage.get_user_by_email(user_email)
+        if user_email:
+            raise ValidationError('Back off, this email is taken')
 
 
 class LoginForm(FlaskForm):

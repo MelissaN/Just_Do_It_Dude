@@ -49,10 +49,7 @@ class User(Base, UserMixin):
         """
             Encrypts password
         """
-        print(password)
         secure_pw = generate_password_hash(password)
-        print(type(secure_pw))
-        print(check_password_hash(secure_pw, password))
         setattr(self, 'password', secure_pw)
 
 

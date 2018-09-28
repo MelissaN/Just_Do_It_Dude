@@ -61,7 +61,7 @@ class DBStorage():
         except (IndexError, TypeError):
             return ""
 
-    def get_user(self, email):
+    def get_user_by_email(self, email):
         """
             return user info
         """

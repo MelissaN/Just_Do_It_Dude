@@ -77,6 +77,7 @@ def register():
 
         storage.save(new_user)
         flash('A warm welcome from Melissa and Amy!', 'success')
+        login_user(new_user)
         return redirect(url_for('home'))
     return render_template("register.html", form=form)
 
