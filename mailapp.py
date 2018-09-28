@@ -2,7 +2,9 @@
 """APP"""
 from classes import storage
 from classes.goal_class import Goal
+from datetime import datetime, date
 from flask import abort, Flask, jsonify, redirect, request, render_template, flash
+from flask_cors import CORS
 from flask_mail import Mail, Message
 from forms import GoalForm
 import os
@@ -14,6 +16,7 @@ import string
 app = Flask(__name__)
 # app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
+#cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 # security against modifying cookies and CSRF attacks
 app.config['SECRET_KEY'] = 'tehe'
@@ -28,9 +31,22 @@ mail = Mail(app)
 
 
 def email_accountability_partner():
+    """send email to accountability partner alerting them a friend has chosen them to hold them accountable"""
     msg = Message('Hello from Just Do It Dude!', sender=(os.environ.get('MY_EMAIL')), recipients=[partner_email])
     msg.body = "Dear " + accountability_partner + ", Woohoo! Starting now, your friend has a goal to " + goal + " by " + deadline + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
     mail.send(msg)
+
+
+def is_goal_editable(goal_obj):
+    """return True if goal is longer than 5 days and less than a quarter towards deadline"""
+    today = date.today()
+    try:
+        duration = (goal_obj.deadline - goal_obj.start_date).days
+        editable_period = (duration//4)
+        if (duration > 5 and (goal_obj.start_date - today).days < editable_period):
+            return True
+    except:
+        return False
 
 
 @app.errorhandler(404)
@@ -38,6 +54,7 @@ def not_found(error):
     """return custom 404 page
        return render_template("custom_404.html")
     """
+    return("404")
     pass
 
 
@@ -67,9 +84,40 @@ def display_pledges():
     return render_template("landing.html", all_records=all_records.values())
 
 
-@app.route("/home")
+@app.route('/home', methods=['GET'])
 def home():
+    """return home page"""
     return render_template('home.html', title_page='Home')
+
+
+@app.route("/edit", methods=['GET'])
+def edit():
+    """return test page with edit button feature"""
+    users_records = storage.all()
+    goal_objs_and_editability = list()
+    for rec in users_records.values():
+        goal_objs_and_editability.append((rec, is_goal_editable(rec)))
+    print(goal_objs_and_editability)
+    return render_template('editpage.html', title_page='Edit',
+                           goal_objs_and_editability=goal_objs_and_editability)
+
+
+@app.route("/edit", methods=['POST'])
+def update():
+    """return test page with edit button feature"""
+    req = request.form
+    print("test is {}".format(req.get("test")))
+    return("testing", 200)
+
+
+#@app.after_request
+#def handle_cors(response):
+    #"""cors"""
+    # allow access from other domains
+    #response.headers.add('Access-Control-Allow-Origin', '*')
+    #response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    #response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    #return response
 
 
 if __name__ == "__main__":
