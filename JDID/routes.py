@@ -126,7 +126,6 @@ def dashboard():
 
 
 @app.route("/dashboard", methods=['POST'])
-# @login_required
 def update():
     """return test page with edit button feature"""
     req = request.form
