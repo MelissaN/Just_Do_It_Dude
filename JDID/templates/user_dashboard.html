@@ -16,7 +16,7 @@ function save_to_DB(goal_id) {
   let editElem = document.getElementById("edit" + goal_id);
   let updated_data = editElem.innerHTML + ",id=" + goal_id;
 //  console.log("updated_data is " + updated_data)
-  document.getElementById("status" + goal_id).innerHTML = "Saved!"
+  document.getElementById("status" + goal_id).innerHTML = "Your accountability partner is notified of your update!"
 
   let xhttp = new XMLHttpRequest();
   let url = "http://localhost:5000/dashboard"
@@ -36,7 +36,7 @@ function delete_from_DB(goal_id) {
   let editElem = document.getElementById("edit" + goal_id);
   let goal_to_delete = goal_id;
 //  console.log('goal_to_delete is ' + goal_to_delete)
-  document.getElementById("status" + goal_id).innerHTML = "Deleted!"
+  document.getElementById("status" + goal_id).innerHTML = "Deleted! Your accountability partner is notified that you forfeited your pledge!"
 
   let xhttp = new XMLHttpRequest();
   let url = "http://localhost:5000/dashboard"
@@ -73,7 +73,7 @@ function delete_from_DB(goal_id) {
   <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" />
   {% endif %}
   <!-- WRITE 'SAVED' OR 'DELETED' ON BUTTON CLICK -->
-  <div id="status{{goal_obj[0].id}}">&nbsp;</div><br><br>
+  <div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br><br>
 </center>
 {% endfor %}
 {% endif %}
