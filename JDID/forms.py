@@ -40,8 +40,11 @@ class RegistrationForm(FlaskForm):
 
     def validate_email(self, email):
         user = storage.get_user_by_email(email.data)
-        if user.email:
-            raise ValidationError('Back off, this email is taken')
+        try:
+            if user.email:
+                raise ValidationError('Back off, this email is taken')
+        except:
+            pass
 
 
 class LoginForm(FlaskForm):
