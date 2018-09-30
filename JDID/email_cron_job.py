@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Cron job to send emails out to accountability parnters at deadline"""
+"""Cron job to send emails out to accountability partners at deadline"""
 from JDID import app
 from JDID.classes import storage
 from datetime import date
@@ -18,13 +18,17 @@ mail = Mail(app)
 
 
 with app.app_context():
+    """
+       Check daily if today is deadline date for any user's goal
+       Email accountability partner and have them confirm if goal accomplished
+    """
     all_records = storage.all()
     today = str(date.today())
     for rec in all_records.values():
         if (rec.deadline == today):
             msg = Message('Hello from Just Do It Dude!', sender=(
                 'MY_EMAIL'), recipients=[rec.partner_email])
-            msg.body = "Dear " + rec.accountability_partner + ", It's now the deadline. Has your friend reached their goal to " + \
-                rec.goal + "? Please check in with them as they've pledged to " + rec.pledge + "!"
+            INFORM_GOAL_DEADLINE = "Dear " + rec.accountability_partner + ", It's now the deadline. Has your friend reached their goal to " + rec.goal + "? Please check in with them as they've pledged to " + rec.pledge + "!"
+            msg.body = INFORM_GOAL_DEADLINE
             mail.send(msg)
             print("Done: One email sent to " + rec.partner_email)

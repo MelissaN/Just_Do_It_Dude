@@ -52,7 +52,7 @@ def display_pledges():
                   "partner_email": partner_email, "pledge": pledge}
     obj = Goal(**attributes)
     storage.save(obj)
-    # helper_methods.email_accountability_partner()
+    # helper_methods.email_goal_logged()
     return redirect(url_for("dashboard"))
 
 
@@ -125,6 +125,7 @@ def update():
             if str(rec.id) == goal_id:
                 setattr(rec, 'goal', updated_goal)
                 storage.save(rec)
+                # helper_methods.email_goal_updated()
     except:
         goal_to_delete = req.get('goal_to_delete')
         for rec in users_records.values():
@@ -132,6 +133,8 @@ def update():
                 msg_goal_deleted = "=( Someone has just forfeited their pledge and will {} to {}".format(
                     rec.pledge, rec.accountability_partner)
                 storage.delete(rec)
+                # helper_methods.email_goal_deleted()
+    return("just updated/deleted")
 
 
 # @app.errorhandler(404)
