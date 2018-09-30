@@ -22,7 +22,7 @@ class GoalForm(FlaskForm):
                                          validators=[DataRequired(), Length(max=50)])
     partner_email = StringField('Partner Email',
                                 validators=[DataRequired(), Email()])
-    submit = SubmitField('Wooohoo!')
+    submit = SubmitField('Set goal!')
 
 
 class RegistrationForm(FlaskForm):
