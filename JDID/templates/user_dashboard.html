@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<center>
-  <h1>User Dashboard</h1>
+<center><br><br>
+  <h3>Personal Dashboard</h3>
   <p>You can still tweak your goal if your goal is longer than 5 days and you're within a quarter along the way!<p>
   <p>Simply edit the goal and click update.</p>
 </center>
@@ -58,7 +58,7 @@ function delete_from_DB(goal_id) {
 <br>
 <div role="list" class="ui divided middle aligned list">
   <div role="listitem" class="item">
-
+    <!-- UPDATE/DELETE BUTTONS -->
     {% if goal_obj[1] == True %}
     <!--  <input id="delete_button" type="button" value="Update" onclick="save_to_DB({{goal_obj[0].id}})" /> -->
     <!--  <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" /> -->
@@ -79,17 +79,19 @@ function delete_from_DB(goal_id) {
     <div class="content">
       <div id="deleted{{goal_obj[0].id}}">
 	{% if goal_obj[1] == True %}
-	<h5 id="edit{{goal_obj[0].id}}" contenteditable="true">
+	<h4 id="edit{{goal_obj[0].id}}" contenteditable="true">
 	  {% else %}
-	  <h5>
+	  <h4>
 	    {% endif %}
 	    {{ goal_obj[0].goal }}
-	  </h5>
-	  <!-- SUMMARY OF GOAL'S DEADLINE AND PLEDGE -->
-	  by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!
+	  </h4>
+	  <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
+	  by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!<br><br>
+	  <div class="progress">
+	    <div class="progress-bar" role="progressbar" style="width: {{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}%" aria-valuenow="{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}" aria-valuemin="10" aria-valuemax="100"></div>
+	  </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -98,4 +100,4 @@ function delete_from_DB(goal_id) {
 {% endfor %}
 {% endif %}
 
-{% endblock content %}
+{% endblock %}

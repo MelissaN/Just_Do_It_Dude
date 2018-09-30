@@ -35,9 +35,12 @@ mail = Mail(app)
 def index():
     """return landing page with goal form"""
     form = GoalForm()
-    all_records = storage.all()
     count = storage.count()
-    return render_template("landing.html", all_records=all_records.values(), form=form, count=count)
+    all_records = storage.all()
+    goals_and_days_passed = list()
+    for rec in all_records.values():
+        goals_and_days_passed.append((rec, helper_methods.days_passed(rec)))
+    return render_template("landing.html", form=form, count=count, goals_and_days_passed=goals_and_days_passed)
 
 
 @app.route('/', methods=['POST'])
@@ -107,7 +110,7 @@ def dashboard():
     goal_objs_and_editability = list()
     for rec in users_records.values():
         goal_objs_and_editability.append(
-            (rec, helper_methods.is_goal_editable(rec)))
+            (rec, helper_methods.is_goal_editable(rec), helper_methods.days_passed(rec)))
     # print(goal_objs_and_editability)
     return render_template('user_dashboard.html', title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
