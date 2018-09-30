@@ -27,6 +27,7 @@ IF NOT EXISTS goals
        pledge VARCHAR
 (500) NOT NULL,
        start_date DATE,
+       completed BOOLEAN,
        PRIMARY KEY
 (id)
 );
