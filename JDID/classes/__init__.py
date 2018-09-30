@@ -2,3 +2,4 @@
 from JDID.database.engine import DBStorage
 
 storage = DBStorage()
+storage.reload()
