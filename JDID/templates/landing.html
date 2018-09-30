@@ -5,36 +5,73 @@
         {% if form %}
         {{ form.hidden_tag() }}
         <div class="col align-self-center">
-            <div>
-                {{ form.goal.label(class="form-control") }}
-                <!-- error -->
+            <div class="form-group">
+                {{ form.goal.label(class="form-control form-control-sm") }}
                 {% if form.goal.errors %}
-                <div class='invalid-input'>
+                {{ form.goal(class="form-control form-control-sm is-invalid") }}
+                <div class='invalid-feedback'>
                     {% for error in form.goal.errors %}
                     <span>{{ error }}</span>
                     {% endfor %}
                 </div>
+                {% else %}
+                {{ form.goal(class="form-control form-control-sm") }}
                 {% endif %}
-                {{ form.goal }}
             </div>
-            <div>
-                {{ form.deadline.label(class="form-control") }}
-                {{ form.deadline }}
+            <div class="form-group">
+                {{ form.deadline.label(class="form-control form-control-sm") }}
+                {% if form.deadline.errors %}
+                {{ form.deadline(class="form-control form-control-sm is-invalid") }}
+                <div class='invalid-feedback'>
+                    {% for error in form.deadline.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.deadline(class="form-control form-control-sm") }}
+                {% endif %}
             </div>
-            <div>
-                {{ form.pledge.label(class="form-control") }}
-                {{ form.pledge }}
+            <div class="form-group">
+                {{ form.pledge.label(class="form-control form-control-sm") }}
+                {% if form.pledge.errors %}
+                {{ form.pledge(class="form-control form-control-sm is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.partner_email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.pledge(class="form-control form-control-sm") }}
+                {% endif %}
             </div>
-            <div>
-                {{ form.accountability_partner.label(class="form-control") }}
-                {{ form.accountability_partner }}
+            <div class="form-group">
+                {{ form.accountability_partner.label(class="form-control form-control-sm") }}
+                {% if form.accountability_partner.errors %}
+                {{ form.accountability_partner(class="form-control form-control-sm is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.accountability_partner.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.accountability_partner(class="form-control form-control-sm") }}
+                {% endif %}
             </div>
-            <div>
-                {{ form.partner_email.label(class="form-control") }}
-                {{ form.partner_email() }}
+            <div class="form-group">
+                {{ form.partner_email.label(class="form-control form-control-sm") }}
+                {% if form.partner_email.errors %}
+                {{ form.partner_email(class="form-control form-control-sm is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.partner_email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.partner_email(class="form-control form-control-sm") }}
+                {% endif %}
             </div>
-            <div>
-                {{ form.submit.label(class="form-control") }}
+            <div class="form-group">
+                {{ form.submit.label(class="form-control form-control-sm") }}
                 {{ form.submit() }}
             </div>
         </div>

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """APP"""
+from datetime import date
 from JDID import app
 from flask import abort, jsonify, redirect, request, render_template, flash, url_for
 from flask_cors import CORS
@@ -46,31 +47,20 @@ def email_accountability_partner():
     # """
     # pass
 
-
-@app.route('/', methods=['GET'])
-def index():
-    """return landing page with goal form"""
-    form = GoalForm()
-    all_records = storage.all()
-    return render_template("landing.html", all_records=all_records.values(), form=form)
-
-
-@app.route('/', methods=['POST'])
-def display_pledges():
+@app.route('/', methods=['GET', 'POST'])
+def index_goal():
     """return summary in response to form submission"""
-    goal = request.form["goal"]
-    deadline = request.form["deadline"]
-    accountability_partner = request.form["accountability_partner"]
-    partner_email = request.form["partner_email"]
-    pledge = request.form["pledge"]
-    attributes = {"goal": goal, "deadline": deadline,
-                  "accountability_partner": accountability_partner,
-                  "partner_email": partner_email, "pledge": pledge}
-    obj = Goal(**attributes)
-    storage.save(obj)
+    form = GoalForm()
+    if form.validate_on_submit():
+        obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
+                   accountability_partner=form.accountability_partner.data,
+                   partner_email=form.partner_email.data, pledge=form.pledge.data)
+        storage.save(obj)
+        flash('Successfully made a commitment!', 'success')
+        # !!! check that user exist in db, otherwise have them register
     all_records = storage.all()
     # email_accountability_partner()
-    return render_template("landing.html", all_records=all_records.values())
+    return render_template("user_dashboard.html", all_records=all_records.values(), form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -94,7 +84,6 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = storage.get_user_by_email(form.email.data)
-        # print(check_password_hash(user.password, form.password.data))
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('dashboard'))
@@ -137,6 +126,24 @@ def update():
         setattr(rec, 'goal', req.get('updated_goal'))
         storage.save(rec)
     return("user_dashboard.html", 200)
+
+
+def deadline_checker():
+    # route to send after deadline hits
+    # 1) grab all dates from database and loop through it see if dates match today
+    all_records = storage.all().values()
+    for record in all_records:
+        print(date.today())
+        if record.deadline == date.today():
+            # 2) if it matches, send email with link
+            print('email me!')
+
+
+@app.route("/completion", methods=['GET'])
+def confirm_completion():
+    # 3) clicking the link will take person to page where they confirm completion
+    # 4) update the completion column in database
+    return render_template("completion.html")
 
 
 # @app.after_request

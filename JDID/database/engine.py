@@ -35,11 +35,11 @@ class DBStorage():
         """
            create new obj and save entry to db
         """
-        try:
-            self.__session.add(obj)
-            self.__session.commit()
-        except:
-            self.__session.rollback()
+        # try:
+        self.__session.add(obj)
+        self.__session.commit()
+        # except:
+        #     self.__session.rollback()
 
     def all(self):
         """
@@ -69,7 +69,7 @@ class DBStorage():
             obj = self.__session.query(User).filter_by(email=email).first()
             return obj
         except TypeError:
-            print('Error at engine.get_user X____X')
+            print('Error at engine.get_user_by_email X____X')
             return None
 
     def get_user_by_id(self, user_id):
