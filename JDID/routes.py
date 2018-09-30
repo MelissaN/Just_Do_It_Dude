@@ -113,13 +113,13 @@ def dashboard():
                            goal_objs_and_editability=goal_objs_and_editability)
 
 
-@app.route("/dashboard", methods=['POST'])
+@app.route("/dashboard", methods=['POST', 'DELETE'])
 def update():
     """return user homepage with updated goals listed"""
     # codes for editting goals
     req = request.form
     users_records = storage.all()
-    try:
+    if request.method == 'POST':
         updated_goal = req.get('updated_goal').split(',id=')[0]
         goal_id = req.get('updated_goal').split(',id=')[1]
         for rec in users_records.values():
@@ -127,7 +127,7 @@ def update():
                 setattr(rec, 'goal', updated_goal)
                 storage.save(rec)
                 # helper_methods.email_goal_updated()
-    except:
+    else:
         goal_to_delete = req.get('goal_to_delete')
         for rec in users_records.values():
             if str(rec.id) == goal_to_delete:
@@ -146,14 +146,14 @@ def update():
     # pass
 
 
-# @app.after_request
-# def handle_cors(response):
-# """cors"""
-# allow access from other domains
-# response.headers.add('Access-Control-Allow-Origin', '*')
-# response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-# response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-# return response
+@app.after_request
+def handle_cors(response):
+    """cors"""
+    # allow access from other domains
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 if __name__ == "__main__":
