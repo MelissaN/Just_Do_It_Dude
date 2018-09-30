@@ -33,7 +33,23 @@ IF NOT EXISTS goals
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-10");
+    ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-01");
+INSERT INTO goals
+    (goal, deadline, accountability_partner, partner_email, pledge, start_date)
+VALUES
+    ("run the upcoming 5K marathon", "2019-10-20", "Melissa", "cheersmelissa@gmail.com", "treat Holberton staff to first round of drinks", "2018-09-10");
+
+INSERT INTO goals
+    (goal, deadline, accountability_partner, partner_email, pledge, start_date)
+VALUES
+    ("launch 3 apps", "2019-01-20", "Melissa", "cheersmelissa@gmail.com", "do 100 push ups while Suzie records", "2018-08-10");
+
+INSERT INTO goals
+    (goal, deadline, accountability_partner, partner_email, pledge, start_date)
+VALUES
+    ("sucessfully land an airplane", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");
+
+
 CREATE TABLE
 IF NOT EXISTS users
 (
