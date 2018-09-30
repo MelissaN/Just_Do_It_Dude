@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<form id='validate-completion' action="{{ url_for('completion_submit') }}" method="POST">
+    <input id='complete-true' type="button" value="√">
+    <input id='complete-false' type="button" value="-">
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const jdidUrl = `${location.origin}`;
+        let good = document.getElementById('complete-true')
+        let bad = document.getElementById('complete-false')
+        good.addEventListener("click", function (e) {
+            console.log(e)
+            e.value = 'true'
+            location.href = jdidUrl + '/completion_set'
+        })
+
+        bad.addEventListener("click", function (e) {
+            e.value = 'false'
+            location.href = jdidUrl + '/completion_set'
+        })
+    })
+</script>
+
+{% endblock content %}
