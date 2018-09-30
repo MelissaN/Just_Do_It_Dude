@@ -59,6 +59,15 @@ class DBStorage():
             goal_dic[key] = obj
         return goal_dic
 
+    def count(self):
+        """
+           count total number of entries in db; start with dummy base 2750
+        """
+        total = 2750
+        for obj in self.__session.query(Goal).all():
+            total += 1
+        return total
+
     def get(self, username):
         """
            return goal if username given

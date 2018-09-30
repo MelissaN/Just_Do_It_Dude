@@ -44,6 +44,9 @@
   </form>
 </div>
 
+<!-- SHOW TOTAL NUMBER OF USER SUBMITTED GOALS -->
+{% if count %}{{ count }} pledges so far!{% endif %}
+
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
 {% if all_records %}
 {% for rec in all_records %}
