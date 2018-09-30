@@ -36,7 +36,8 @@ def index():
     """return landing page with goal form"""
     form = GoalForm()
     all_records = storage.all()
-    return render_template("landing.html", all_records=all_records.values(), form=form)
+    count = storage.count()
+    return render_template("landing.html", all_records=all_records.values(), form=form, count=count)
 
 
 @app.route('/', methods=['POST'])

@@ -58,20 +58,41 @@ function delete_from_DB(goal_id) {
 {% for goal_obj in goal_objs_and_editability %}
 <br>
 <center>
-  <!-- ENABLE EDITING IF EDITABILITY IS TRUE -->
-  {% if goal_obj[1] == True %}
-  <h5 id="edit{{goal_obj[0].id}}" contenteditable="true">
-  {% else %}
-  <h5>
-  {% endif %}
-  {{ goal_obj[0].goal }}
-  </h5>
-  <!-- SUMMARY OF GOAL'S DEADLINE AND PLEDGE -->
-  by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!
-  {% if goal_obj[1] == True %}
-  <input id="delete_button" type="button" value="Update" onclick="save_to_DB({{goal_obj[0].id}})" />
-  <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" />
-  {% endif %}
+  <div role="list" class="ui divided middle aligned list">
+    <div role="listitem" class="item">
+
+      {% if goal_obj[1] == True %}
+      <!--  <input id="delete_button" type="button" value="Update" onclick="save_to_DB({{goal_obj[0].id}})" /> -->
+      <!--  <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" /> -->
+      <div class="right floated content">
+	<div class="ui buttons">
+	  <button class="ui button" role="button" onclick="save_to_DB({{goal_obj[0].id}})">
+	    Update
+	  </button>
+	  <div class="or"></div>
+	  <button class="ui button" role="button" onclick="delete_from_DB({{goal_obj[0].id}})">
+	    Delete
+	  </button>
+	</div>
+      </div>
+      {% endif %}
+
+      <!-- ENABLE EDITING IF EDITABILITY IS TRUE -->
+      <div class="content">
+	{% if goal_obj[1] == True %}
+	<h5 id="edit{{goal_obj[0].id}}" contenteditable="true">
+	  {% else %}
+	  <h5>
+	    {% endif %}
+	    {{ goal_obj[0].goal }}
+	  </h5>
+	  <!-- SUMMARY OF GOAL'S DEADLINE AND PLEDGE -->
+	  by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!
+      </div>
+
+    </div>
+  </div>
+
   <!-- WRITE 'SAVED' OR 'DELETED' ON BUTTON CLICK -->
   <div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br><br>
 </center>
