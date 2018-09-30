@@ -31,22 +31,6 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-def email_accountability_partner():
-    msg = Message('Hello from Just Do It Dude!', sender=(
-        os.environ.get('MY_EMAIL')), recipients=[partner_email])
-    msg.body = "Dear " + accountability_partner + ", Woohoo! Starting now, your friend has a goal to " + goal + " by " + deadline + \
-        ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
-    mail.send(msg)
-
-
-# @app.errorhandler(404)
-# def not_found(error):
-    # """return custom 404 page
-    #    return render_template("custom_404.html")
-    # """
-    # pass
-
-
 @app.route('/', methods=['GET'])
 def index():
     """return landing page with goal form"""
@@ -57,7 +41,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def display_pledges():
-    """return summary in response to form submission"""
+    """return user dashboard summary in response to form submission"""
     goal = request.form["goal"]
     deadline = request.form["deadline"]
     accountability_partner = request.form["accountability_partner"]
@@ -68,13 +52,13 @@ def display_pledges():
                   "partner_email": partner_email, "pledge": pledge}
     obj = Goal(**attributes)
     storage.save(obj)
-    all_records = storage.all()
-    # email_accountability_partner()
-    return render_template("landing.html", all_records=all_records.values())
+    # helper_methods.email_accountability_partner()
+    return redirect(url_for("dashboard"))
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """return landing page in response to registration"""
     form = RegistrationForm()
     if form.validate_on_submit():
         new_user = User(email=form.email.data,
@@ -83,12 +67,13 @@ def register():
         storage.save(new_user)
         flash('A warm welcome from Melissa and Amy!', 'success')
         login_user(new_user)
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('index'))
     return render_template("register.html", form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """return home page upon login"""
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     form = LoginForm()
@@ -97,24 +82,26 @@ def login():
         # print(check_password_hash(user.password, form.password.data))
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('display_pledges'))
         else:
             flash("Invalid email or password, buddy", 'danger')
     return render_template("login.html", title="Login", form=form)
 
 
-@app.route('/logout')
-@login_required
+@app.route('/logout', methods=['GET'])
+#@login_required
 def logout():
+    """return landing page in response to logout"""
     logout_user()
-    return redirect(url_for('index'))
+    flash("See you later. Come back a winner!", "success")
+    return redirect(url_for('display_pledges'))
 
 
 @app.route("/dashboard", methods=['GET'])
 @login_required
 def dashboard():
-    """return test page with edit button feature"""
-    # codes for editting goals
+    """return user homepage with their goals listed"""
+    # TODO: Filter goals so they're specific to logged in user
     users_records = storage.all()
     goal_objs_and_editability = list()
     for rec in users_records.values():
@@ -126,27 +113,43 @@ def dashboard():
 
 
 @app.route("/dashboard", methods=['POST'])
-# @login_required
+#@login_required
 def update():
-    """return test page with edit button feature"""
+    """return user homepage with updated goals listed"""
+    # codes for editting goals
     req = request.form
-    print("updated_goal is {}".format(req.get("updated_goal")))
     users_records = storage.all()
-    # test first record goal changed
-    for rec in users_records.values():
-        print(rec.goal)
-        setattr(rec, 'goal', req.get('updated_goal'))
-        storage.save(rec)
-    return("user_dashboard.html", 200)
+    try:
+        updated_goal = req.get('updated_goal').split(',id=')[0]
+        goal_id = req.get('updated_goal').split(',id=')[1]
+        for rec in users_records.values():
+            if str(rec.id) == goal_id:
+                setattr(rec, 'goal', updated_goal)
+                storage.save(rec)
+    except:
+        goal_to_delete = req.get('goal_to_delete')
+        for rec in users_records.values():
+            if str(rec.id) == goal_to_delete:
+                msg_goal_deleted = "=( Someone has just forfeited their pledge and will {} to {}".format(
+                    rec.pledge, rec.accountability_partner)
+                storage.delete(rec)
+
+
+# @app.errorhandler(404)
+# def not_found(error):
+    # """return custom 404 page
+    #    return render_template("custom_404.html")
+    # """
+    # pass
 
 
 # @app.after_request
 # def handle_cors(response):
 # """cors"""
 # allow access from other domains
-#response.headers.add('Access-Control-Allow-Origin', '*')
-#response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-#response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+# response.headers.add('Access-Control-Allow-Origin', '*')
+# response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+# response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
 # return response
 
 
