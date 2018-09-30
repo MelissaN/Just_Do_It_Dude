@@ -1,3 +1,6 @@
+.total_count {
+    color: red;
+}
 .goal_status {
     color: grey;
     font-style: italic;

@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class='container'>
+<div class='container'><br><br>
   <form method='POST' action=''>
     {% if form %}
     {{ form.hidden_tag() }}
@@ -45,14 +45,15 @@
 </div>
 
 <!-- SHOW TOTAL NUMBER OF USER SUBMITTED GOALS -->
-{% if count %}{{ count }} pledges so far!{% endif %}
+<div class="total_count text-center"><h3>{% if count %}{{ count }}</h3><h6> pledges so far!</h6>{% endif %}</div>
 
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
-{% if all_records %}
-{% for rec in all_records %}
+{% if goals_and_days_passed %}
+{% for rec in goals_and_days_passed %}
 <br><br>
 <center>
-    <p>Someone has pledged to <b>{{rec.goal}}</b> by <b>{{rec.deadline}}</b> or <b>{{rec.pledge}}</b>!</p>
+    <p>Someone has pledged to <b>{{rec[0].goal}}</b> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
+    <h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
 </center>
 {% endfor %}
 {% endif %}

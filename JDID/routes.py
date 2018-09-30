@@ -35,9 +35,12 @@ mail = Mail(app)
 def index():
     """return landing page with goal form"""
     form = GoalForm()
-    all_records = storage.all()
     count = storage.count()
-    return render_template("landing.html", all_records=all_records.values(), form=form, count=count)
+    all_records = storage.all()
+    goals_and_days_passed = list()
+    for rec in all_records.values():
+        goals_and_days_passed.append((rec, helper_methods.days_passed(rec)))
+    return render_template("landing.html", form=form, count=count, goals_and_days_passed=goals_and_days_passed)
 
 
 @app.route('/', methods=['POST'])
@@ -107,19 +110,19 @@ def dashboard():
     goal_objs_and_editability = list()
     for rec in users_records.values():
         goal_objs_and_editability.append(
-            (rec, helper_methods.is_goal_editable(rec)))
+            (rec, helper_methods.is_goal_editable(rec), helper_methods.days_passed(rec)))
     # print(goal_objs_and_editability)
     return render_template('user_dashboard.html', title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
 
 
-@app.route("/dashboard", methods=['POST'])
+@app.route("/dashboard", methods=['POST', 'DELETE'])
 def update():
     """return user homepage with updated goals listed"""
     # codes for editting goals
     req = request.form
     users_records = storage.all()
-    try:
+    if request.method == 'POST':
         updated_goal = req.get('updated_goal').split(',id=')[0]
         goal_id = req.get('updated_goal').split(',id=')[1]
         for rec in users_records.values():
@@ -127,7 +130,7 @@ def update():
                 setattr(rec, 'goal', updated_goal)
                 storage.save(rec)
                 # helper_methods.email_goal_updated()
-    except:
+    else:
         goal_to_delete = req.get('goal_to_delete')
         for rec in users_records.values():
             if str(rec.id) == goal_to_delete:
@@ -146,14 +149,14 @@ def update():
     # pass
 
 
-# @app.after_request
-# def handle_cors(response):
-# """cors"""
-# allow access from other domains
-# response.headers.add('Access-Control-Allow-Origin', '*')
-# response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-# response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-# return response
+@app.after_request
+def handle_cors(response):
+    """cors"""
+    # allow access from other domains
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 if __name__ == "__main__":

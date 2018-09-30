@@ -16,17 +16,27 @@
 </head>
 
 <body>
-    <main class="container">
+    <article class="container">
 
-      <nav>
-	<a href="{{ url_for('index') }}">Home</a>
-	<a href="{{ url_for('dashboard') }}">Dashboard</a>
-	<a href="{{ url_for('register') }}">Sign Up</a>
-	<a href="{{ url_for('login') }}">Log In</a>
-	<a href="{{ url_for('logout') }}">Log Out</a>
-      </nav>
+      <ul class="nav justify-content-end">
+	<li class="nav-item">
+	  <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+	</li>
+	<li class="nav-item">
+	  <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+	</li>
+	<li class="nav-item">
+	  <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+	</li>
+	<li class="nav-item">
+	  <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+	</li>
+	<li class="nav-item">
+	  <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
+	</li>
+      </ul>
 
-      <h1 class="logo">Just Do It Dude!</h1>
+      <div class="text-center shadow-lg p-5 rounded"><h1>Just Do It Dude!</h1></div>
 
       <div class="row">
         <div class="col-md-8">
@@ -41,9 +51,10 @@
           {% endwith %}
         </div>
       </div>
-      {% block content %}{% endblock content%}
 
-    </main>
+    {% block content %}{% endblock%}
+    </article>
+
 </body>
 
 </html>
