@@ -15,7 +15,8 @@ class GoalForm(FlaskForm):
     """
     goal = StringField('Goal',
                        validators=[DataRequired(), Length(max=100)])
-    deadline = DateField('End Date', validators=[DataRequired()])
+    deadline = DateField('End Date', validators=[
+                         DataRequired()], format='%m/%d/%Y')
     pledge = IntegerField('Pledge',
                           validators=[DataRequired()])
     accountability_partner = StringField('Accountability Partner',
@@ -37,9 +38,9 @@ class RegistrationForm(FlaskForm):
                                      DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
-    def validate_email(self, user_email):
-        user_email = storage.get_user_by_email(user_email)
-        if user_email:
+    def validate_email(self, email):
+        user = storage.get_user_by_email(email.data)
+        if user.email:
             raise ValidationError('Back off, this email is taken')
 
 

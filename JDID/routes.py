@@ -113,7 +113,6 @@ def dashboard():
 
 
 @app.route("/dashboard", methods=['POST'])
-#@login_required
 def update():
     """return user homepage with updated goals listed"""
     # codes for editting goals
