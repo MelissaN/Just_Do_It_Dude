@@ -16,7 +16,7 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.goal(placeholder="ex. run a 5K marathon" class="form-control form-control-sm") }}
+                    {{ form.goal(placeholder="ex. run a 5K marathon", class="form-control form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -29,7 +29,7 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.deadline(placeholder="format yyyy-mm-dd", class="form-control form-control-sm") }}
+                    {{ form.deadline(placeholder="format mm/dd/yyyy", class="form-control form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">

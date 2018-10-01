@@ -44,13 +44,11 @@ def email_accountability_partner():
 def index():
     """return summary in response to form submission"""
     form = GoalForm()
-    if request.method == 'GET':
-        count = storage.count()
-        all_records = storage.all()
-        goals_and_days_passed = list()
-        for rec in all_records.values():
-            goals_and_days_passed.append(
-                (rec, helper_methods.days_passed(rec)))
+    count = storage.count()
+    all_records = storage.all()
+    goals_and_days_passed = list()
+    for rec in all_records.values():
+        goals_and_days_passed.append((rec, helper_methods.days_passed(rec)))
     if form.validate_on_submit():
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
                    accountability_partner=form.accountability_partner.data,
@@ -59,7 +57,6 @@ def index():
         flash('Successfully made a commitment!', 'success')
         return render_template("user_dashboard.html", form=form)
         # !!! check that user exist in db, otherwise have them register
-    all_records = storage.all()
     # email_accountability_partner()
     return render_template("landing.html", form=form, count=count, goals_and_days_passed=goals_and_days_passed)
 
@@ -89,7 +86,7 @@ def login():
         user = storage.get_user_by_email(form.email.data)
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('display_pledges'))
+            return redirect(url_for('index'))
         else:
             flash("Invalid email or password, buddy", 'danger')
     return render_template("login.html", title="Login", form=form)
@@ -101,7 +98,7 @@ def logout():
     """return landing page in response to logout"""
     logout_user()
     flash("See you later. Come back a winner!", "success")
-    return redirect(url_for('display_pledges'))
+    return redirect(url_for('index'))
 
 
 @app.route("/dashboard", methods=['GET'])
@@ -160,9 +157,6 @@ def completion_submit():
         if goal.goal == "find a job":
             setattr(goal, 'completed', bool(is_completed))
             storage.save(goal)
-    goals_after = storage.all().values()
-    for i in goals_after:
-        print(i.completed)
     flash("You've successfully evaluated your friend's goal", 'success')
     return redirect(url_for("index"))
 
