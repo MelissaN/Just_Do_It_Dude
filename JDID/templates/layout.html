@@ -2,71 +2,102 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
-  <link rel="stylesheet" href="../static/styles.css">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-    $(function () {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+      $(function () {
       $("#datepicker").datepicker();
-    });
-  </script>
+      });
+    </script>
 
-  {% if title_page %}
-  <title>JDID -- {{ title_page }}</title>
-  {% else %}
-  <title>JDID</title>
-  {% endif %}
+    {% if title_page %}
+    <title>JDID -- {{ title_page }}</title>
+    {% else %}
+    <title>JDID</title>
+    {% endif %}
 </head>
 
 <body>
-  <article class="container">
+  <!-- NAVIGATION BAR -->
+  <ul class="nav justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
+    </li>
+  </ul>
 
-    <ul class="nav justify-content-end">
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
-      </li>
-    </ul>
-
-    <div class="text-center shadow-lg p-5 rounded">
-      <h1>Just Do It Dude!</h1>
+  <!-- IMAGE -->
+  <div class="container">
+    <div class="big-banner">
+      <div class="text-center shadow-lg p-5 rounded"><h1 class="logo">Just Do It Dude!</h1></div>
     </div>
+  </div><br>
+
+  <!-- DESCRIBE SITE WITH FLEETING TEXT -->
+  <div class="container">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+	<div class="carousel-item active">
+	  <h1 class="text-center">Ask friends to hold you accountable</h1>
+	</div>
+	<div class="carousel-item">
+	  <h1 class="text-center">Set a goal and a deadline</h1>
+	</div>
+	<div class="carousel-item">
+	  <h1 class="text-center">If you don't succeed, treat your friends to an experience</h1>
+	</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERT MESSAGES -->
+  <article class="container">
+    <!--<div class="text-center shadow-lg p-5 rounded"><h1>Just Do It Dude!</h1></div>-->
 
     <div class="row">
       <div class="col-md-8">
-        {% with msgs = get_flashed_messages(with_categories=true) %}
-        {% if msgs %}
-        {% for category, msg in msgs %}
-        <div class="alert alert-{{ category }}">
-          {{ msg }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
       </div>
     </div>
 
-    {% block content %}{% endblock%}
-  </article>
+    <center>
+	{% with msgs = get_flashed_messages(with_categories=true) %}
+	{% if msgs %}
+	{% for category, msg in msgs %}
+	<div class="alert alert-{{ category }}">
+          {{ msg }}
+	</div>
+	{% endfor %}
+	{% endif %}
+	{% endwith %}
+    </center>
 
+    <!-- POPULATE WITH SPECIFIC HTML -->
+    <div class="container">
+      {% block content %}{% endblock%}
+    </div>
+
+  </article>
 </body>
 
 </html>
