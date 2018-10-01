@@ -65,7 +65,8 @@ class Goal(Base):
     accountability_partner = Column(String(255), nullable=False)
     partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
-    start_date = date.today()
+    start_date = Column(Date(), nullable=False)
+    # start_date = date.today()
     # user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     def __init__(self, **kwargs):

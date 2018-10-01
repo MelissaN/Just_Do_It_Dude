@@ -52,8 +52,17 @@
 {% for rec in goals_and_days_passed %}
 <br><br>
 <div class="text-center shadow-sm p-3 rounded">
-  <p>Someone has pledged to <b>{{rec[0].goal}}</b> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
-  <h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+	<img src="../static/team2.jpeg" alt="avatar" class="rounded-circle" style="width:100px; height:80px;">
+      </div>
+      <div class="col-sm-10">
+	<p>Someone has pledged to <b>{{rec[0].goal}}</b> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
+	<h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
+      </div>
+    </div>
+  </div>
 </div>
 {% endfor %}
 {% endif %}

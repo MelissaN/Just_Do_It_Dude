@@ -79,17 +79,18 @@ function delete_from_DB(goal_id) {
     <div class="content">
       <div id="deleted{{goal_obj[0].id}}">
 	{% if goal_obj[1] == True %}
-	<h4 id="edit{{goal_obj[0].id}}" contenteditable="true">
+	<h3 id="edit{{goal_obj[0].id}}" contenteditable="true">
 	  {% else %}
-	  <h4>
+	  <h3>
 	    {% endif %}
 	    {{ goal_obj[0].goal }}
-	  </h4>
+	  </h3>
 	  <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
-	  by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!<br><br>
+	  <p>by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!</p>
 	  <div class="progress">
 	    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}%" aria-valuenow="{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}" aria-valuemin="10" aria-valuemax="100"></div>
 	  </div>
+	  <p class="goal_status">{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }} days along!</p><br><br>
       </div>
     </div>
   </div>

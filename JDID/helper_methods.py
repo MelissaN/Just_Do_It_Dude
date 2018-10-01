@@ -25,8 +25,6 @@ def is_goal_editable(goal_obj):
 
 def days_passed(goal_obj):
     """return number of days passed since goal creation"""
-    #print(date.today())
-    #print(goal_obj.start_date)
     return ((date.today() - goal_obj.start_date).days)
 
 
