@@ -29,7 +29,8 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.deadline(placeholder="format mm/dd/yyyy", class="form-control form-control-sm") }}
+                    {{ form.deadline(placeholder="format mm/dd/yyyy", id="datepicker", class="form-control
+                    form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
@@ -100,5 +101,4 @@
 </center>
 {% endfor %}
 {% endif %}
-
 {% endblock content %}

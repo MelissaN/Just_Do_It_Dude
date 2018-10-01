@@ -15,7 +15,7 @@ class GoalForm(FlaskForm):
     """
     goal = StringField('Goal',
                        validators=[DataRequired(), Length(max=100)])
-    deadline = DateField('End Date', validators=[
+    deadline = DateField('Deadline', validators=[
                          DataRequired()], format='%m/%d/%Y')
     pledge = IntegerField('Pledge',
                           validators=[DataRequired()])

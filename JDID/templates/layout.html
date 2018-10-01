@@ -2,58 +2,70 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
-    <link rel="stylesheet" href="../static/styles.css">
-    {% if title_page %}
-    <title>JDID -- {{ title_page }}</title>
-    {% else %}
-    <title>JDID</title>
-    {% endif %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+  <link rel="stylesheet" href="../static/styles.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $(function () {
+      $("#datepicker").datepicker();
+    });
+  </script>
+
+  {% if title_page %}
+  <title>JDID -- {{ title_page }}</title>
+  {% else %}
+  <title>JDID</title>
+  {% endif %}
 </head>
 
 <body>
-    <article class="container">
+  <article class="container">
 
-      <ul class="nav justify-content-end">
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
-	</li>
-      </ul>
+    <ul class="nav justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
+      </li>
+    </ul>
 
-      <div class="text-center shadow-lg p-5 rounded"><h1>Just Do It Dude!</h1></div>
+    <div class="text-center shadow-lg p-5 rounded">
+      <h1>Just Do It Dude!</h1>
+    </div>
 
-      <div class="row">
-        <div class="col-md-8">
-          {% with msgs = get_flashed_messages(with_categories=true) %}
-          {% if msgs %}
-          {% for category, msg in msgs %}
-          <div class="alert alert-{{ category }}">
-            {{ msg }}
-          </div>
-          {% endfor %}
-          {% endif %}
-          {% endwith %}
+    <div class="row">
+      <div class="col-md-8">
+        {% with msgs = get_flashed_messages(with_categories=true) %}
+        {% if msgs %}
+        {% for category, msg in msgs %}
+        <div class="alert alert-{{ category }}">
+          {{ msg }}
         </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
       </div>
+    </div>
 
     {% block content %}{% endblock%}
-    </article>
+  </article>
 
 </body>
 
