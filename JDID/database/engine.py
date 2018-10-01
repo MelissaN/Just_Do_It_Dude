@@ -41,6 +41,14 @@ class DBStorage():
         except:
             self.__session.rollback()
 
+    def delete(self, obj):
+        """
+           delete obj from db
+        """
+        self.__session.delete(obj)
+        self.__session.commit()
+        self.__session.flush()
+
     def all(self):
         """
            return all entries in db
@@ -50,6 +58,15 @@ class DBStorage():
             key = obj.id
             goal_dic[key] = obj
         return goal_dic
+
+    def count(self):
+        """
+           count total number of entries in db; start with dummy base 2750
+        """
+        total = 2750
+        for obj in self.__session.query(Goal).all():
+            total += 1
+        return total
 
     def get(self, username):
         """
@@ -82,3 +99,19 @@ class DBStorage():
         except TypeError:
             print('Error at engine.get_user_by_id X____X')
             return None
+
+    def reload(self):
+        """
+           creates all tables in database & session from engine
+        """
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(
+            sessionmaker(
+                bind=self.__engine,
+                expire_on_commit=False))
+
+    def close(self):
+        """
+            calls remove() on private session attribute (self.session)
+        """
+        self.__session.remove()

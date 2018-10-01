@@ -1,45 +1,104 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<h1>User Dashboard</h1>
-<h5>You can still tweak your goal if your goal is longer than 5 days and you're within a quarter along the way! Simply
-  edit the goal and click update.</h5>
+<center><br><br>
+  <h3>Personal Dashboard</h3>
+  <p>You can still tweak your goal if your goal is longer than 5 days and you're within a quarter along the way!<p>
+      <p>Simply edit the goal and click update.</p>
+</center>
 
+<!-- FUNCTION TO UPDATE AND DELETE GOALS -->
 <script>
+  function save_to_DB(goal_id) {
+    //  let elem = this;
+    //  let id = elem.getAttribute('id');
+    let editElem = document.getElementById("edit" + goal_id);
+    let updated_data = editElem.innerHTML + ",id=" + goal_id;
+    //  console.log("updated_data is " + updated_data)
 
-  function saveToDB() {
-//  let elem = this;
-//  let id = elem.getAttribute('id');
-  let editElem = document.getElementById("edit");
-  let updatedData = editElem.innerHTML;
+    let xhttp = new XMLHttpRequest();
+    let url = "http://localhost:5000/dashboard"
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        let status = document.getElementById("status" + goal_id);
+        status.innerHTML = "Your accountability partner is notified of your update!";
+      }
+    };
 
-  let xhttp = new XMLHttpRequest();
-  let url = "http://localhost:5000/dashboard"
-  // console.log({info:url})
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("update_button").innerHTML = 'Saved!';
-    }
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("updated_goal=" + updated_data);
   }
 
-  xhttp.open("POST", url, true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("updated_goal=" + updatedData);
-}
+  function delete_from_DB(goal_id) {
+    let editElem = document.getElementById("edit" + goal_id);
+    let goal_to_delete = goal_id;
+    //  console.log('goal_to_delete is ' + goal_to_delete)
+
+    let xhttp = new XMLHttpRequest();
+    let url = "http://localhost:5000/dashboard"
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("deleted" + goal_id).innerHTML = "Deleted!";
+        document.getElementById("status" + goal_id).innerHTML =
+          "Your accountability partner is notified that you forfeited your pledge!";
+      }
+    }
+
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("goal_to_delete=" + goal_to_delete);
+  }
 </script>
 
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
 {% if goal_objs_and_editability %}
 {% for goal_obj in goal_objs_and_editability %}
 <br>
-<center>
-  {% if goal_obj[1] == True %}<h5 id="edit" id="put this in jinga goal_obj[0].id" contenteditable="true">{% else %}<h5>{%
-      endif %}{{goal_obj[0].goal}}</h5>
-    by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!
-    {% if goal_obj[1] == True %}<input id="update_button" type="button" value="Update" onclick="saveToDB()" />{% endif
-    %}<br><br>
-</center>
+<div role="list" class="ui divided middle aligned list">
+  <div role="listitem" class="item">
+    <!-- UPDATE/DELETE BUTTONS -->
+    {% if goal_obj[1] == True %}
+    <!--  <input id="delete_button" type="button" value="Update" onclick="save_to_DB({{goal_obj[0].id}})" /> -->
+    <!--  <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" /> -->
+    <div class="right floated content">
+      <div class="ui buttons">
+        <button class="ui button" role="button" onclick="save_to_DB({{goal_obj[0].id}})">
+          Update
+        </button>
+        <div class="or"></div>
+        <button class="ui button" role="button" onclick="delete_from_DB({{goal_obj[0].id}})">
+          Delete
+        </button>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ENABLE EDITING IF EDITABILITY IS TRUE -->
+    <div class="content">
+      <div id="deleted{{goal_obj[0].id}}">
+        {% if goal_obj[1] == True %}
+        <h4 id="edit{{goal_obj[0].id}}" contenteditable="true">
+          {% else %}
+          <h4>
+            {% endif %}
+            {{ goal_obj[0].goal }}
+          </h4>
+          <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
+          by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!<br><br>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}%"
+              aria-valuenow="{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}"
+              aria-valuemin="10" aria-valuemax="100"></div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITE 'SAVED' OR 'DELETED' ON BUTTON CLICK -->
+<div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br><br>
 {% endfor %}
 {% endif %}
 
-{% endblock content %}
+{% endblock %}

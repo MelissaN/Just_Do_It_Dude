@@ -5,87 +5,100 @@
         {% if form %}
         {{ form.hidden_tag() }}
         <div class="col align-self-center">
-            <div class="form-group">
-                {{ form.goal.label(class="form-control form-control-sm") }}
-                {% if form.goal.errors %}
-                {{ form.goal(class="form-control form-control-sm is-invalid") }}
-                <div class='invalid-feedback'>
-                    {% for error in form.goal.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
+            <fieldset class="form-group">
+                <div class="form-group">
+                    {{ form.goal.label(class="form-control form-control-sm") }}
+                    {% if form.goal.errors %}
+                    {{ form.goal(class="form-control form-control-sm is-invalid") }}
+                    <div class='invalid-feedback'>
+                        {% for error in form.goal.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.goal(placeholder="ex. run a 5K marathon" class="form-control form-control-sm") }}
+                    {% endif %}
                 </div>
-                {% else %}
-                {{ form.goal(class="form-control form-control-sm") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.deadline.label(class="form-control form-control-sm") }}
-                {% if form.deadline.errors %}
-                {{ form.deadline(class="form-control form-control-sm is-invalid") }}
-                <div class='invalid-feedback'>
-                    {% for error in form.deadline.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
+                <div class="form-group">
+                    {{ form.deadline.label(class="form-control form-control-sm") }}
+                    {% if form.deadline.errors %}
+                    {{ form.deadline(class="form-control form-control-sm is-invalid") }}
+                    <div class='invalid-feedback'>
+                        {% for error in form.deadline.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.deadline(placeholder="format yyyy-mm-dd", class="form-control form-control-sm") }}
+                    {% endif %}
                 </div>
-                {% else %}
-                {{ form.deadline(class="form-control form-control-sm") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.pledge.label(class="form-control form-control-sm") }}
-                {% if form.pledge.errors %}
-                {{ form.pledge(class="form-control form-control-sm is-invalid")}}
-                <div class="invalid-feedback">
-                    {% for error in form.partner_email.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
+                <div class="form-group">
+                    {{ form.pledge.label(class="form-control form-control-sm") }}
+                    {% if form.pledge.errors %}
+                    {{ form.pledge(class="form-control form-control-sm is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.partner_email.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.pledge(placeholder="ex. treat Magdalena to Fogo De Chao", class="form-control
+                    form-control-sm") }}
+                    {% endif %}
                 </div>
-                {% else %}
-                {{ form.pledge(class="form-control form-control-sm") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.accountability_partner.label(class="form-control form-control-sm") }}
-                {% if form.accountability_partner.errors %}
-                {{ form.accountability_partner(class="form-control form-control-sm is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.accountability_partner.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
+                <div class="form-group">
+                    {{ form.accountability_partner.label(class="form-control form-control-sm") }}
+                    {% if form.accountability_partner.errors %}
+                    {{ form.accountability_partner(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.accountability_partner.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.accountability_partner(placeholder="ex. Melissa Ng", class="form-control form-control-sm")
+                    }}
+                    {% endif %}
                 </div>
-                {% else %}
-                {{ form.accountability_partner(class="form-control form-control-sm") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.partner_email.label(class="form-control form-control-sm") }}
-                {% if form.partner_email.errors %}
-                {{ form.partner_email(class="form-control form-control-sm is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.partner_email.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
+                <div class="form-group">
+                    {{ form.partner_email.label(class="form-control form-control-sm") }}
+                    {% if form.partner_email.errors %}
+                    {{ form.partner_email(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.partner_email.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.partner_email(placeholder="ex. cheersmelissa@gmail.com", class="form-control
+                    form-control-sm") }}
+                    {% endif %}
                 </div>
-                {% else %}
-                {{ form.partner_email(class="form-control form-control-sm") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.submit.label(class="form-control form-control-sm") }}
-                {{ form.submit() }}
-            </div>
+                <div class="form-group">
+                    <!--{{ form.submit.label(class="form-control") }}-->
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </fieldset>
         </div>
         {% endif %}
     </form>
 </div>
 
+<!-- SHOW TOTAL NUMBER OF USER SUBMITTED GOALS -->
+<div class="total_count text-center">
+    <h3>{% if count %}{{ count }}</h3>
+    <h6> pledges so far!</h6>{% endif %}
+</div>
+
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
-{% if all_records %}
-{% for rec in all_records %}
+{% if goals_and_days_passed %}
+{% for rec in goals_and_days_passed %}
 <br><br>
 <center>
-    <p>Someone has pledged to {{rec.goal}} by {{rec.deadline}} or {{rec.pledge}}!</p>
+    <p>Someone has pledged to <b>{{rec[0].goal}}</b> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
+    <h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
 </center>
 {% endfor %}
 {% endif %}
+
 {% endblock content %}
