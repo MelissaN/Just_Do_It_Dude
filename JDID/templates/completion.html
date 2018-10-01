@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            {% if user %}
+            <h3>Did {{ user.first_name }} successfully completed the following goal: {{user.goal }}?</h3>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <form id='validate-completion' action="{{ url_for('completion_submit') }}" method="GET">
+            <input class="btn btn-info btn-outline-success btn-circle btn-xl" id="complete-true" type="button" value="√">
+            <input class="btn btn-info btn-outline-danger btn-circle btn-xl" id='complete-false' type="button" value="-">
+        </form>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const jdidUrl = `${location.origin}`;
+        let good = document.getElementById('complete-true')
+        let bad = document.getElementById('complete-false')
+
+        good.addEventListener("click", function (e) {
+            location.href = jdidUrl + '/completion_set?complete=1'
+        })
+
+        bad.addEventListener("click", function (e) {
+            location.href = jdidUrl + '/completion_set?complete=0'
+        })
+    })
+</script>
+
+{% endblock content %}

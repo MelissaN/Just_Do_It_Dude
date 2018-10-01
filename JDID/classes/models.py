@@ -4,7 +4,7 @@ Class User
 """
 from datetime import date
 from JDID import login_user
-from sqlalchemy import Column, String, Date, Integer, ForeignKey
+from sqlalchemy import Column, String, Date, Integer, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -66,6 +66,7 @@ class Goal(Base):
     partner_email = Column(String(255), nullable=False)
     pledge = Column(String(500), nullable=False)
     start_date = date.today()
+    completed = Column(Boolean, default=None)
     # user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     def __init__(self, **kwargs):
@@ -76,5 +77,6 @@ class Goal(Base):
         self.partner_email = ""
         self.pledge = ""
         self.start_date = date.today()
+        self.completed = None
         for k, v in kwargs.items():
             setattr(self, k, v)
