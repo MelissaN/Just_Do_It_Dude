@@ -51,7 +51,6 @@ def email_accountability_partner():
 def index():
     """return summary in response to form submission"""
     form = GoalForm()
-    print(form)
     if form.validate_on_submit():
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
                    accountability_partner=form.accountability_partner.data,
@@ -130,25 +129,14 @@ def update():
     return("user_dashboard.html", 200)
 
 
-def deadline_checker():
-    # route to send after deadline hits
-    # 1) grab all dates from database and loop through it see if dates match today
-    all_records = storage.all().values()
-    for record in all_records:
-        print(date.today())
-        if record.deadline == date.today():
-            # 2) if it matches, send email to partner, linking to specific user
-            print('email me!')
-
-
 @app.route("/completion", methods=['GET', 'POST'])
 def confirm_completion():
-    return render_template("completion.html")
+    user = storage.get_user_by_email("blah@blah.blah")
+    return render_template("completion.html", user=user)
 
 
-@app.route("/completion_set", methods=['GET', 'POST'])
+@app.route("/completion_set", methods=['GET'])
 def completion_submit():
-    print(request.method)
     is_completed = request.args.get('complete', None)
     # verify specific user id
     goals = storage.all().values()
@@ -160,7 +148,8 @@ def completion_submit():
     goals_after = storage.all().values()
     for i in goals_after:
         print(i.completed)
-    return redirect(render_template("user_dashboard"))
+    flash("You've successfully evaluated your friend's goal", 'success')
+    return redirect(url_for("index"))
 
 
 # @app.after_request
