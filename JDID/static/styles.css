@@ -1,7 +1,23 @@
+.big-banner {
+    background: url('team1.jpeg') no-repeat center;
+    height: 500px;
+}
+.logo {
+    font: bold;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
 .total_count {
     color: red;
 }
 .goal_status {
     color: grey;
     font-style: italic;
+}
+.inspiration {
+    background: #eee;
+    height: 200px;
+    margin-top: 10px;
+    text-align: center;
 }

@@ -88,7 +88,7 @@ function delete_from_DB(goal_id) {
 	  <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
 	  by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!<br><br>
 	  <div class="progress">
-	    <div class="progress-bar" role="progressbar" style="width: {{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}%" aria-valuenow="{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}" aria-valuemin="10" aria-valuemax="100"></div>
+	    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}%" aria-valuenow="{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}" aria-valuemin="10" aria-valuemax="100"></div>
 	  </div>
       </div>
     </div>

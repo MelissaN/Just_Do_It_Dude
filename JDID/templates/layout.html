@@ -16,44 +16,56 @@
 </head>
 
 <body>
-    <article class="container">
+  <!-- NAVIGATION BAR -->
+  <ul class="nav justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
+    </li>
+  </ul>
 
-      <ul class="nav justify-content-end">
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-	</li>
-	<li class="nav-item">
-	  <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
-	</li>
-      </ul>
+  <!-- IMAGE -->
+  <div class="container">
+    <div class="big-banner">
+      <div class="text-center shadow-lg p-5 rounded"><h1 class="logo">Just Do It Dude!</h1></div>
+    </div>
+  </div>
 
-      <div class="text-center shadow-lg p-5 rounded"><h1>Just Do It Dude!</h1></div>
+  <!-- ALERT MESSAGES -->
+  <article class="container">
+    <!--<div class="text-center shadow-lg p-5 rounded"><h1>Just Do It Dude!</h1></div>-->
 
-      <div class="row">
-        <div class="col-md-8">
-          {% with msgs = get_flashed_messages(with_categories=true) %}
-          {% if msgs %}
-          {% for category, msg in msgs %}
-          <div class="alert alert-{{ category }}">
-            {{ msg }}
-          </div>
-          {% endfor %}
-          {% endif %}
-          {% endwith %}
-        </div>
+    <div class="row">
+      <div class="col-md-8">
+	{% with msgs = get_flashed_messages(with_categories=true) %}
+	{% if msgs %}
+	{% for category, msg in msgs %}
+	<div class="alert alert-{{ category }}">
+          {{ msg }}
+	</div>
+	{% endfor %}
+	{% endif %}
+	{% endwith %}
       </div>
+    </div>
 
-    {% block content %}{% endblock%}
-    </article>
+    <!-- POPULATE WITH SPECIFIC HTML -->
+    <div class="container">
+      {% block content %}{% endblock%}
+    </div>
+
+  </article>
 
 </body>
 
