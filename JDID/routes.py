@@ -129,7 +129,7 @@ def update():
     return("user_dashboard.html", 200)
 
 
-@app.route("/completion", methods=['GET', 'POST'])
+@app.route("/completion", methods=['GET'])
 def confirm_completion():
     user = storage.get_user_by_email("blah@blah.blah")
     return render_template("completion.html", user=user)
