@@ -35,11 +35,11 @@ class DBStorage():
         """
            create new obj and save entry to db
         """
-        # try:
-        self.__session.add(obj)
-        self.__session.commit()
-        # except:
-        #     self.__session.rollback()
+        try:
+            self.__session.add(obj)
+            self.__session.commit()
+        except:
+            self.__session.rollback()
 
     def all(self):
         """

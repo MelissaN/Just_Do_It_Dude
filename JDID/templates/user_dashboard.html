@@ -10,9 +10,8 @@
   function saveToDB() {
 //  let elem = this;
 //  let id = elem.getAttribute('id');
-  var editElem = document.getElementById("edit");
-  var updatedData = editElem.innerHTML;
-  console.log('udpateddata = ' + updatedData)
+  let editElem = document.getElementById("edit");
+  let updatedData = editElem.innerHTML;
 
   let xhttp = new XMLHttpRequest();
   let url = "http://localhost:5000/dashboard"

@@ -48,19 +48,21 @@ def email_accountability_partner():
     # pass
 
 @app.route('/', methods=['GET', 'POST'])
-def index_goal():
+def index():
     """return summary in response to form submission"""
     form = GoalForm()
+    print(form)
     if form.validate_on_submit():
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
                    accountability_partner=form.accountability_partner.data,
                    partner_email=form.partner_email.data, pledge=form.pledge.data)
         storage.save(obj)
         flash('Successfully made a commitment!', 'success')
+        return render_template("user_dashboard.html", form=form)
         # !!! check that user exist in db, otherwise have them register
     all_records = storage.all()
     # email_accountability_partner()
-    return render_template("user_dashboard.html", all_records=all_records.values(), form=form)
+    return render_template("landing.html", all_records=all_records.values(), form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -135,15 +137,30 @@ def deadline_checker():
     for record in all_records:
         print(date.today())
         if record.deadline == date.today():
-            # 2) if it matches, send email with link
+            # 2) if it matches, send email to partner, linking to specific user
             print('email me!')
 
 
-@app.route("/completion", methods=['GET'])
+@app.route("/completion", methods=['GET', 'POST'])
 def confirm_completion():
-    # 3) clicking the link will take person to page where they confirm completion
-    # 4) update the completion column in database
     return render_template("completion.html")
+
+
+@app.route("/completion_set", methods=['GET', 'POST'])
+def completion_submit():
+    print(request.method)
+    is_completed = request.args.get('complete', None)
+    # verify specific user id
+    goals = storage.all().values()
+    for goal in goals:
+        # !! replace below code with user_id connected with goal
+        if goal.goal == "find a job":
+            setattr(goal, 'completed', bool(is_completed))
+            storage.save(goal)
+    goals_after = storage.all().values()
+    for i in goals_after:
+        print(i.completed)
+    return redirect(render_template("user_dashboard"))
 
 
 # @app.after_request
