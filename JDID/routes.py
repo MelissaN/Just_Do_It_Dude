@@ -5,7 +5,6 @@ from flask import abort, jsonify, redirect, request, render_template, flash, url
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
-import hashlib
 from JDID import helper_methods
 from JDID.forms import GoalForm, RegistrationForm, LoginForm
 from JDID.classes import storage
@@ -58,7 +57,6 @@ def create_goal():
     """POST goal to database"""
     form = GoalForm()
     if form.validate_on_submit():
-        # temp_user_id = hashlib.sha256()
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
                    accountability_partner=form.accountability_partner.data,
                    partner_email=form.partner_email.data, pledge=form.pledge.data)
@@ -71,10 +69,8 @@ def create_goal():
             return redirect(url_for('dashboard'))
         else:
             session['cookie'] = obj.id
-            # print('sss = ', session)
             flash("Please login first!")
             return redirect(url_for("login"))
-        # !!! check that user exist in db, otherwise have them register
         # email_accountability_partner()
     return redirect(url_for("dashboard.html"))
 
