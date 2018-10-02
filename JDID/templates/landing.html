@@ -7,7 +7,7 @@
         <div class="col align-self-center">
             <fieldset class="form-group">
                 <div class="form-group">
-                    {{ form.goal.label(class="form-control form-control-sm") }}
+                    {{ form.goal.label(class="form-control-label") }}
                     {% if form.goal.errors %}
                     {{ form.goal(class="form-control form-control-sm is-invalid") }}
                     <div class='invalid-feedback'>
@@ -20,7 +20,7 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.deadline.label(class="form-control form-control-sm") }}
+                    {{ form.deadline.label(class="form-control-label") }}
                     {% if form.deadline.errors %}
                     {{ form.deadline(class="form-control form-control-sm is-invalid") }}
                     <div class='invalid-feedback'>
@@ -29,12 +29,12 @@
                         {% endfor %}
                     </div>
                     {% else %}
-                    {{ form.deadline(placeholder="format mm/dd/yyyy", id="datepicker", class="form-control
+                    {{ form.deadline(id="datepicker", class="form-control
                     form-control-sm") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.pledge.label(class="form-control form-control-sm") }}
+                    {{ form.pledge.label(class="form-control-label") }}
                     {% if form.pledge.errors %}
                     {{ form.pledge(class="form-control form-control-sm is-invalid")}}
                     <div class="invalid-feedback">
@@ -48,7 +48,7 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.accountability_partner.label(class="form-control form-control-sm") }}
+                    {{ form.accountability_partner.label(class="form-control-label") }}
                     {% if form.accountability_partner.errors %}
                     {{ form.accountability_partner(class="form-control form-control-sm is-invalid") }}
                     <div class="invalid-feedback">
@@ -62,7 +62,7 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.partner_email.label(class="form-control form-control-sm") }}
+                    {{ form.partner_email.label(class="form-control-label") }}
                     {% if form.partner_email.errors %}
                     {{ form.partner_email(class="form-control form-control-sm is-invalid") }}
                     <div class="invalid-feedback">
@@ -95,10 +95,24 @@
 {% if goals_and_days_passed %}
 {% for rec in goals_and_days_passed %}
 <br><br>
-<center>
-    <p>Someone has pledged to <b>{{rec[0].goal}}</b> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
-    <h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
-</center>
+<div class="text-center shadow-sm p-3 rounded">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+	<img src="../static/team2.jpeg" alt="avatar" class="rounded-circle" style="width:100px; height:80px;">
+      </div>
+      <div class="col-sm-10">
+	<p>Someone has pledged to <b>{{rec[0].goal}}</b> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
+	<h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
+      </div>
+    </div>
+  </div>
+</div>
 {% endfor %}
 {% endif %}
+
+<!-- INSPIRATION SECTION -->
+<div class="inspiration">Inspiration Section TBD</div>
+<div class="inspiration">Inspiration Section PHOTOS?</div>
+
 {% endblock content %}

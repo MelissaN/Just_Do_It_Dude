@@ -55,9 +55,10 @@ def index():
                    partner_email=form.partner_email.data, pledge=form.pledge.data)
         storage.save(obj)
         flash('Successfully made a commitment!', 'success')
-        return render_template("user_dashboard.html", form=form)
+        return redirect(url_for('dashboard'))
+        # return render_template("user_dashboard.html", form=form)
         # !!! check that user exist in db, otherwise have them register
-    # email_accountability_partner()
+        # email_accountability_partner()
     return render_template("landing.html", form=form, count=count, goals_and_days_passed=goals_and_days_passed)
 
 
