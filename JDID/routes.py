@@ -101,14 +101,13 @@ def login():
         user = storage.get_user_by_email(form.email.data)
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         else:
             flash("Invalid email or password, buddy", 'danger')
     return render_template("login.html", uin=uin, title="Login", form=form)
 
 
 @app.route('/logout', methods=['GET'])
-# @login_required
 def logout():
     """return landing page in response to logout"""
     logout_user()
@@ -128,8 +127,6 @@ def dashboard():
         storage.save(goal_obj)
     user = storage.get_user_by_id(current_user.id)
     goal_objs_and_editability = list()
-    print(user.id)
-    print(user.goals)
     for rec in user.goals:
         goal_objs_and_editability.append(
             (rec, helper_methods.is_goal_editable(rec),
