@@ -160,10 +160,11 @@ def update():
     return("just updated/deleted")
 
 
-@app.route("/completion", methods=['GET'])
-def confirm_completion():
-    user = storage.get_user_by_email("user@gmail.com")
-    return render_template("completion.html", user=user)
+@app.route("/completion/<goal_id>", methods=['GET'])
+def confirm_completion(goal_id):
+    goal_obj = storage.get_goal_by_id(goal_id)
+    user = storage.get_user_by_id(goal_obj.user_id)
+    return render_template("completion.html", user=user, goal=goal_obj)
 
 
 @app.route("/completion_set", methods=['GET'])
