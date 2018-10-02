@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """APP"""
-from datetime import date
 from JDID import app
-from flask import abort, jsonify, redirect, request, render_template, flash, url_for
+from flask import abort, jsonify, redirect, request, render_template, flash, url_for, make_response
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
+import hashlib
 from JDID import helper_methods
 from JDID.forms import GoalForm, RegistrationForm, LoginForm
 from JDID.classes import storage
@@ -40,7 +40,7 @@ def email_accountability_partner():
     mail.send(msg)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     """return summary in response to form submission"""
     uin = helper_methods.logged_in(current_user)
@@ -50,11 +50,30 @@ def index():
     goals_and_days_passed = list()
     for rec in all_records.values():
         goals_and_days_passed.append((rec, helper_methods.days_passed(rec)))
+    return render_template("landing.html", uin=uin, form=form, count=count, goals_and_days_passed=goals_and_days_passed)
+
+
+@app.route('/create_goal', methods=['POST'])
+def create_goal():
+    """POST goal to database"""
+    form = GoalForm()
     if form.validate_on_submit():
+        # temp_user_id = hashlib.sha256()
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
                    accountability_partner=form.accountability_partner.data,
                    partner_email=form.partner_email.data, pledge=form.pledge.data)
         storage.save(obj)
+        print('goal id = ', obj.id)
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            setattr(obj, 'user_id', current_user.id)
+            storage.save(obj)
+        # else:
+        #     print(request.cookies)
+        #     resp = make_response(render_template('/create_goal'))
+        #     resp.set_cookie('goal_id', obj.id)
+        #     flash("Please login first!")
+        #     return redirect(render_template("login.html"))
         flash('Successfully made a commitment!', 'success')
         return redirect(url_for('dashboard'))
         # return render_template("user_dashboard.html", form=form)
