@@ -11,8 +11,26 @@ GRANT SELECT ON performance_schema.* TO 'root'@'localhost';
 FLUSH PRIVILEGES;
 
 USE justdoitdude_dev_db;
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE
+IF NOT EXISTS users
+(
+       id INT UNIQUE NOT NULL AUTO_INCREMENT,
+       first_name VARCHAR
+(255) NOT NULL,
+       password VARCHAR
+(255) NOT NULL,
+       email VARCHAR
+(255) NOT NULL, PRIMARY KEY
+(id)
+);
+INSERT INTO users
+    (first_name, password, email)
+VALUES
+    ("Melissa", "testpw", "cheersmelissa@gmail.com");
+
 CREATE TABLE
 IF NOT EXISTS goals
 (
@@ -27,6 +45,10 @@ IF NOT EXISTS goals
        pledge VARCHAR
 (500) NOT NULL,
        start_date DATE,
+       user_id INT, 
+       FOREIGN KEY
+(user_id) REFERENCES users
+(id),
        completed BOOLEAN,
        PRIMARY KEY
 (id)
@@ -49,26 +71,3 @@ INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
     ("sucessfully land an airplane", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");
-
-
-CREATE TABLE
-IF NOT EXISTS users
-(
-       id INT UNIQUE NOT NULL AUTO_INCREMENT,
-       first_name VARCHAR
-(255) NOT NULL,
-       password VARCHAR
-(255) NOT NULL,
-       email VARCHAR
-(255) NOT NULL,
-       goal_id INT,
-       PRIMARY KEY
-(id),
-       FOREIGN KEY
-(goal_id) REFERENCES justdoitdude_dev_db.goals
-(id)
-);
-INSERT INTO users
-    (first_name, password, email)
-VALUES
-    ("Melissa", "testpw", "cheersmelissa@gmail.com");
