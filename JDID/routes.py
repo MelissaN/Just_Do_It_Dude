@@ -43,6 +43,7 @@ def email_accountability_partner():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """return summary in response to form submission"""
+    uin = helper_methods.logged_in(current_user)
     form = GoalForm()
     count = storage.count()
     all_records = storage.all()
@@ -59,12 +60,13 @@ def index():
         # return render_template("user_dashboard.html", form=form)
         # !!! check that user exist in db, otherwise have them register
         # email_accountability_partner()
-    return render_template("landing.html", form=form, count=count, goals_and_days_passed=goals_and_days_passed)
+    return render_template("landing.html", uin=uin, form=form, count=count, goals_and_days_passed=goals_and_days_passed)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """return landing page in response to registration"""
+    uin = helper_methods.logged_in(current_user)
     form = RegistrationForm()
     if form.validate_on_submit():
         new_user = User(email=form.email.data,
@@ -74,12 +76,13 @@ def register():
         flash('A warm welcome from Melissa and Amy!', 'success')
         login_user(new_user)
         return redirect(url_for('index'))
-    return render_template("register.html", form=form)
+    return render_template("register.html", uin=uin, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """return home page upon login"""
+    uin = helper_methods.logged_in(current_user)
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     form = LoginForm()
@@ -90,7 +93,7 @@ def login():
             return redirect(url_for('index'))
         else:
             flash("Invalid email or password, buddy", 'danger')
-    return render_template("login.html", title="Login", form=form)
+    return render_template("login.html", uin=uin, title="Login", form=form)
 
 
 @app.route('/logout', methods=['GET'])
@@ -99,7 +102,7 @@ def logout():
     """return landing page in response to logout"""
     logout_user()
     flash("See you later. Come back a winner!", "success")
-    return redirect(url_for('index'))
+    return redirect(url_for('dashboard'))
 
 
 @app.route("/dashboard", methods=['GET'])
@@ -107,13 +110,15 @@ def logout():
 def dashboard():
     """return user homepage with their goals listed"""
     # TODO: Filter goals so they're specific to logged in user
+    uin = helper_methods.logged_in(current_user)
     users_records = storage.all()
     goal_objs_and_editability = list()
     for rec in users_records.values():
         goal_objs_and_editability.append(
-            (rec, helper_methods.is_goal_editable(rec), helper_methods.days_passed(rec)))
+            (rec, helper_methods.is_goal_editable(rec),
+             helper_methods.days_passed(rec), helper_methods.progress_percentage(rec)))
     # print(goal_objs_and_editability)
-    return render_template('user_dashboard.html', title_page='Dashboard',
+    return render_template('user_dashboard.html', uin=uin, title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
 
 
@@ -144,7 +149,7 @@ def update():
 
 @app.route("/completion", methods=['GET'])
 def confirm_completion():
-    user = storage.get_user_by_email("blah@blah.blah")
+    user = storage.get_user_by_email("user@gmail.com")
     return render_template("completion.html", user=user)
 
 
