@@ -79,6 +79,7 @@ class DBStorage():
             return None
 
     def get_goals_by_user(self, user_id):
+        # TODO: delete if not necessary
         """
             return goals associated with user
         """

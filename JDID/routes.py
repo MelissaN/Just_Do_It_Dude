@@ -120,16 +120,17 @@ def logout():
 @login_required
 def dashboard():
     """return user homepage with their goals listed"""
-    # TODO: Filter goals so they're specific to logged in user
     uin = helper_methods.logged_in(current_user)
     if session['cookie']:
         goal_id = session['cookie']
         goal_obj = storage.get_goal_by_id(goal_id)
         setattr(goal_obj, 'user_id', current_user.id)
         storage.save(goal_obj)
-    user_records = storage.get_goals_by_user(current_user.id)
+    user = storage.get_user_by_id(current_user.id)
     goal_objs_and_editability = list()
-    for rec in user_records:
+    print(user.id)
+    print(user.goals)
+    for rec in user.goals:
         goal_objs_and_editability.append(
             (rec, helper_methods.is_goal_editable(rec),
              helper_methods.days_passed(rec), helper_methods.progress_percentage(rec)))
