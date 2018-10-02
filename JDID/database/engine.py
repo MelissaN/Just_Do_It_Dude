@@ -68,15 +68,15 @@ class DBStorage():
             total += 1
         return total
 
-    def get(self, username):
+    def get_goal_by_id(self, goal_id):
         """
            return goal if username given
         """
         try:
-            obj = self.__session.query(Goal).get(username)
-            return obj.goal
+            obj = self.__session.query(Goal).filter_by(id=goal_id).first()
+            return obj
         except (IndexError, TypeError):
-            return ""
+            return None
 
     def get_user_by_email(self, email):
         """

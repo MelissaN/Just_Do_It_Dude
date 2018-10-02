@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """APP"""
 from JDID import app
-from flask import abort, jsonify, redirect, request, render_template, flash, url_for, make_response
+from flask import abort, jsonify, redirect, request, render_template, flash, url_for, make_response, session
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
@@ -65,21 +65,18 @@ def create_goal():
         storage.save(obj)
         print('goal id = ', obj.id)
         if current_user.is_authenticated:
-            user_id = current_user.id
             setattr(obj, 'user_id', current_user.id)
             storage.save(obj)
-        # else:
-        #     print(request.cookies)
-        #     resp = make_response(render_template('/create_goal'))
-        #     resp.set_cookie('goal_id', obj.id)
-        #     flash("Please login first!")
-        #     return redirect(render_template("login.html"))
-        flash('Successfully made a commitment!', 'success')
-        return redirect(url_for('dashboard'))
-        # return render_template("user_dashboard.html", form=form)
+            flash('Successfully made a commitment!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            session['cookie'] = obj.id
+            # print('sss = ', session)
+            flash("Please login first!")
+            return redirect(url_for("login"))
         # !!! check that user exist in db, otherwise have them register
         # email_accountability_partner()
-    return render_template("landing.html", uin=uin, form=form, count=count, goals_and_days_passed=goals_and_days_passed)
+    return redirect(url_for("dashboard.html"))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -136,7 +133,15 @@ def dashboard():
         goal_objs_and_editability.append(
             (rec, helper_methods.is_goal_editable(rec),
              helper_methods.days_passed(rec), helper_methods.progress_percentage(rec)))
-    # print(goal_objs_and_editability)
+    # try:
+    if session['cookie']:
+        goal_id = session['cookie']
+        goal_obj = storage.get_goal_by_id(goal_id)
+        setattr(goal_obj, 'user_id', current_user.id)
+        storage.save(goal_obj)
+        # print('after =', goal_obj.id, goal_id, goal_obj.user_id)
+    # except:
+    #     return 'tehe'
     return render_template('user_dashboard.html', uin=uin, title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
 
