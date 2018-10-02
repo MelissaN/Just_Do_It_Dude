@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """APP"""
-from datetime import date
 from JDID import app
-from flask import abort, jsonify, redirect, request, render_template, flash, url_for
+from flask import abort, jsonify, redirect, request, render_template, flash, url_for, make_response, session
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
@@ -40,7 +39,7 @@ def email_accountability_partner():
     mail.send(msg)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     """return summary in response to form submission"""
     uin = helper_methods.logged_in(current_user)
@@ -50,17 +49,29 @@ def index():
     goals_and_days_passed = list()
     for rec in all_records.values():
         goals_and_days_passed.append((rec, helper_methods.days_passed(rec)))
+    return render_template("landing.html", uin=uin, form=form, count=count, goals_and_days_passed=goals_and_days_passed)
+
+
+@app.route('/create_goal', methods=['POST'])
+def create_goal():
+    """POST goal to database"""
+    form = GoalForm()
     if form.validate_on_submit():
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
                    accountability_partner=form.accountability_partner.data,
                    partner_email=form.partner_email.data, pledge=form.pledge.data)
         storage.save(obj)
-        flash('Successfully made a commitment!', 'success')
-        return redirect(url_for('dashboard'))
-        # return render_template("user_dashboard.html", form=form)
-        # !!! check that user exist in db, otherwise have them register
+        if current_user.is_authenticated:
+            setattr(obj, 'user_id', current_user.id)
+            storage.save(obj)
+            flash('Successfully made a commitment!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            session['cookie'] = obj.id
+            flash("Please login first!")
+            return redirect(url_for("login"))
         # email_accountability_partner()
-    return render_template("landing.html", uin=uin, form=form, count=count, goals_and_days_passed=goals_and_days_passed)
+    return redirect(url_for("dashboard.html"))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -75,7 +86,7 @@ def register():
         storage.save(new_user)
         flash('A warm welcome from Melissa and Amy!', 'success')
         login_user(new_user)
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     return render_template("register.html", uin=uin, form=form)
 
 
@@ -90,14 +101,13 @@ def login():
         user = storage.get_user_by_email(form.email.data)
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         else:
             flash("Invalid email or password, buddy", 'danger')
     return render_template("login.html", uin=uin, title="Login", form=form)
 
 
 @app.route('/logout', methods=['GET'])
-# @login_required
 def logout():
     """return landing page in response to logout"""
     logout_user()
@@ -109,15 +119,18 @@ def logout():
 @login_required
 def dashboard():
     """return user homepage with their goals listed"""
-    # TODO: Filter goals so they're specific to logged in user
     uin = helper_methods.logged_in(current_user)
-    users_records = storage.all()
+    if session['cookie']:
+        goal_id = session['cookie']
+        goal_obj = storage.get_goal_by_id(goal_id)
+        setattr(goal_obj, 'user_id', current_user.id)
+        storage.save(goal_obj)
+    user = storage.get_user_by_id(current_user.id)
     goal_objs_and_editability = list()
-    for rec in users_records.values():
+    for rec in user.goals:
         goal_objs_and_editability.append(
             (rec, helper_methods.is_goal_editable(rec),
              helper_methods.days_passed(rec), helper_methods.progress_percentage(rec)))
-    # print(goal_objs_and_editability)
     return render_template('user_dashboard.html', uin=uin, title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
 

@@ -30,7 +30,7 @@ class User(Base, UserMixin):
     first_name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
-    # goals = relationship('Goal', backref='users', cascade='delete')
+    goals = relationship('Goal', cascade='delete')
 
     def __init__(self, *args, **kwargs):
         """
@@ -68,7 +68,7 @@ class Goal(Base):
     start_date = Column(Date(), nullable=False)
     # start_date = date.today()
     completed = Column(Boolean, default=None)
-    # user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     def __init__(self, **kwargs):
         """Initialize instance attributes"""
