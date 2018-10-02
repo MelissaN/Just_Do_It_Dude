@@ -87,9 +87,9 @@
 	  <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
 	  <p>by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!</p>
 	  <div class="progress">
-	    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}%" aria-valuenow="{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }}" aria-valuemin="10" aria-valuemax="100"></div>
+	    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ goal_obj[3] }}%" aria-valuenow="{{ goal_obj[3] }}" aria-valuemin="10" aria-valuemax="100"></div>
 	  </div>
-	  <p class="goal_status">{{ ((goal_obj[2]+10)*100)//((goal_obj[0].deadline - goal_obj[0].start_date).days) }} days along!</p><br><br>
+	  <p class="goal_status"> {{ goal_obj[2] }} days along!</p><br><br>
       </div>
     </div>
   </div>

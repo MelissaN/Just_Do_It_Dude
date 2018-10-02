@@ -36,15 +36,18 @@
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
     </li>
+    {% if uin %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+    </li>
+    {% else %}
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-    </li>
-    <li class="nav-item">
       <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
     </li>
+    {% endif %}
   </ul>
 
   <!-- IMAGE -->
