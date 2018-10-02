@@ -86,7 +86,7 @@ def register():
         storage.save(new_user)
         flash('A warm welcome from Melissa and Amy!', 'success')
         login_user(new_user)
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     return render_template("register.html", uin=uin, form=form)
 
 
@@ -122,17 +122,17 @@ def dashboard():
     """return user homepage with their goals listed"""
     # TODO: Filter goals so they're specific to logged in user
     uin = helper_methods.logged_in(current_user)
+    if session['cookie']:
+        goal_id = session['cookie']
+        goal_obj = storage.get_goal_by_id(goal_id)
+        setattr(goal_obj, 'user_id', current_user.id)
+        storage.save(goal_obj)
     user_records = storage.get_goals_by_user(current_user.id)
     goal_objs_and_editability = list()
     for rec in user_records:
         goal_objs_and_editability.append(
             (rec, helper_methods.is_goal_editable(rec),
              helper_methods.days_passed(rec), helper_methods.progress_percentage(rec)))
-    if session['cookie']:
-        goal_id = session['cookie']
-        goal_obj = storage.get_goal_by_id(goal_id)
-        setattr(goal_obj, 'user_id', current_user.id)
-        storage.save(goal_obj)
     return render_template('user_dashboard.html', uin=uin, title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
 
