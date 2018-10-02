@@ -78,6 +78,16 @@ class DBStorage():
         except (IndexError, TypeError):
             return None
 
+    def get_goals_by_user(self, user_id):
+        """
+            return goals associated with user
+        """
+        try:
+            obj = self.__session.query(Goal).filter_by(user_id=user_id).all()
+            return obj
+        except (IndexError, TypeError):
+            return None
+
     def get_user_by_email(self, email):
         """
             return user info
