@@ -22,24 +22,6 @@ app.url_map.strict_slashes = False
 
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = os.environ.get('MY_EMAIL')
-app.config['MAIL_PASSWORD'] = os.environ.get('MY_EMAIL_PASSWORD')
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
-
-
-def email_accountability_partner():
-    msg = Message('Hello from Just Do It Dude!', sender=(
-        os.environ.get('MY_EMAIL')), recipients=[partner_email])
-    msg.body = "Dear " + accountability_partner + ", Woohoo! Starting now, your friend has a goal to " + goal + " by " + deadline + \
-        ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
-    mail.send(msg)
-
-
 @app.route('/', methods=['GET'])
 def index():
     """return summary in response to form submission"""

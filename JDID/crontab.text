@@ -23,4 +23,4 @@
 
 # Script will run once a day, at 9:00am; sending emails to goal setters'
 # accoutability partners at their deadlines
-0 9 * * * /usr/bin/python3 email_cron_job
+* * * * * /usr/bin/python3 email_cron_job

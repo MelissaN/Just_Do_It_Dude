@@ -9,15 +9,29 @@
       email_goal_deleted:  emails accountability partner friend's deleted goal
 """
 from datetime import datetime, date
+from flask import Flask
+from flask_mail import Message, Mail
+from JDID import app
+import os
+
+mail = Mail(app)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 
 def logged_in(current_user):
     """returns True if user is logged in"""
     try:
         uin = current_user.id
-        return (True)
+        return True
     except:
-        return(False)
+        return False
 
 
 def is_goal_editable(goal_obj):
@@ -72,3 +86,18 @@ def email_goal_deleted():
     INFORM_GOAL_DELETED = "Dear " + accountability_partner + ",\nThis is to notify you that your friend has unfortunately dropped their goal to " + goal + " by " + deadline + ". In doing so, they've forfeited their pledge. Since they've asked that you hold them accountable, they've promised you this: " + pledge + ". Do check in with them!\nLove,\nAmy and Melissa from Just Do It Dude!"    
     msg.body = INFORM_GOAL_DELETED
     mail.send(msg)
+
+
+def email_goal_confirmation(subj, sender, recipients, text_body, html_body):
+    """emails accountability partner to check-in goal for deadline"""
+    print('did I make it here?')
+    print(subj)
+    print(sender)
+    print(recipients)
+    print(text_body)
+    print(html_body)
+    msg = Message(subject=subj, sender=sender, recipients=[recipients], bcc=sender)
+    # msg.body = text_body
+    msg.html = html_body
+    with app.app_context():
+        mail.send(msg)
