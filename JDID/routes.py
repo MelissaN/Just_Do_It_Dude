@@ -5,6 +5,7 @@ from flask import abort, jsonify, redirect, request, render_template, flash, url
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
+import hashlib
 from JDID import helper_methods
 from JDID.forms import GoalForm, RegistrationForm, LoginForm
 from JDID.classes import storage
@@ -159,22 +160,20 @@ def update():
     return("just updated/deleted")
 
 
-@app.route("/completion", methods=['GET'])
-def confirm_completion():
-    user = storage.get_user_by_email("user@gmail.com")
-    return render_template("completion.html", user=user)
+@app.route("/completion/<goal_id>", methods=['GET'])
+def confirm_completion(goal_id):
+    goal_obj = storage.get_goal_by_id(goal_id)
+    user = storage.get_user_by_id(goal_obj.user_id)
+    return render_template("completion.html", user=user, goal=goal_obj)
 
 
-@app.route("/completion_set", methods=['GET'])
-def completion_submit():
+@app.route("/completion_update/<goal_id>", methods=['GET'])
+def completion_submit(goal_id):
     is_completed = request.args.get('complete', None)
-    # verify specific user id
-    goals = storage.all().values()
-    for goal in goals:
-        # !! replace below code with user_id connected with goal
-        if goal.goal == "find a job":
-            setattr(goal, 'completed', bool(is_completed))
-            storage.save(goal)
+    goal_obj = storage.get_goal_by_id(goal_id)
+    if goal_obj:
+        setattr(goal_obj, 'completed', bool(is_completed))
+        storage.save(goal_obj)
     flash("You've successfully evaluated your friend's goal", 'success')
     return redirect(url_for("index"))
 
