@@ -5,6 +5,7 @@ from flask import abort, jsonify, redirect, request, render_template, flash, url
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
+import hashlib
 from JDID import helper_methods
 from JDID.forms import GoalForm, RegistrationForm, LoginForm
 from JDID.classes import storage
