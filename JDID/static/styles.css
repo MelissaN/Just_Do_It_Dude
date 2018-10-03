@@ -19,14 +19,17 @@
     color: blue;
     font-style: italic;
     font: bold;
+    font-size: 1.3em;
 }
 .goal_status {
     color: grey;
     font-style: italic;
 }
 .inspiration {
-    background: #eee;
-    height: 200px;
     margin-top: 10px;
+    height: 40px;
+    border-radius: 10px;
+    background: black;
+    color: white;
     text-align: center;
 }
