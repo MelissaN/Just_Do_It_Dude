@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """APP"""
-from JDID import app
 from flask import abort, jsonify, redirect, request, render_template, flash, url_for, make_response, session
 from flask_cors import CORS
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Mail, Message
 import hashlib
+from JDID import app
 from JDID import helper_methods
 from JDID.forms import GoalForm, RegistrationForm, LoginForm
 from JDID.classes import storage
@@ -32,17 +32,9 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-def email_accountability_partner():
-    msg = Message('Hello from Just Do It Dude!', sender=(
-        os.environ.get('MY_EMAIL')), recipients=[partner_email])
-    msg.body = "Dear " + accountability_partner + ", Woohoo! Starting now, your friend has a goal to " + goal + " by " + deadline + \
-        ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'"
-    mail.send(msg)
-
-
 @app.route('/', methods=['GET'])
 def index():
-    """return summary in response to form submission"""
+    """show feed of goals and pledges"""
     uin = helper_methods.logged_in(current_user)
     form = GoalForm()
     count = storage.count()
@@ -54,7 +46,9 @@ def index():
 
 @app.route('/create_goal', methods=['POST'])
 def create_goal():
-    """POST goal to database"""
+    """POST goal to database if logged in
+        else save goal obj in cookie and update it's user_id once logged in
+    """
     form = GoalForm()
     if form.validate_on_submit():
         obj = Goal(goal=form.goal.data, deadline=form.deadline.data,
@@ -65,12 +59,12 @@ def create_goal():
             setattr(obj, 'user_id', current_user.id)
             storage.save(obj)
             flash('Successfully made a commitment!', 'success')
+            # helper_methods.email_goal_logged()
             return redirect(url_for('dashboard'))
         else:
             session['cookie'] = obj.id
             flash("Please login first!")
             return redirect(url_for("login"))
-        # email_accountability_partner()
     return redirect(url_for("dashboard.html"))
 
 
@@ -125,6 +119,7 @@ def dashboard():
         goal_obj = storage.get_goal_by_id(goal_id)
         setattr(goal_obj, 'user_id', current_user.id)
         storage.save(goal_obj)
+        # helper_methods.email_goal_logged()
     user = storage.get_user_by_id(current_user.id)
     goal_objs_and_editability = list()
     for rec in user.goals:
