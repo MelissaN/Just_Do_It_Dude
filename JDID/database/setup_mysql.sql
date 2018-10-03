@@ -18,13 +18,9 @@ CREATE TABLE
 IF NOT EXISTS users
 (
        id INT UNIQUE NOT NULL AUTO_INCREMENT,
-       first_name VARCHAR
-(255) NOT NULL,
-       password VARCHAR
-(255) NOT NULL,
-       email VARCHAR
-(255) NOT NULL, PRIMARY KEY
-(id)
+       first_name VARCHAR(255) NOT NULL,
+       password VARCHAR(255) NOT NULL,
+       email VARCHAR(255) NOT NULL, PRIMARY KEY(id)
 );
 INSERT INTO users
     (first_name, password, email)
@@ -35,23 +31,17 @@ CREATE TABLE
 IF NOT EXISTS goals
 (
        id INT UNIQUE NOT NULL AUTO_INCREMENT,
-       goal VARCHAR
-(500) NOT NULL,
+       goal VARCHAR(500) NOT NULL,
        deadline DATE,
-       accountability_partner VARCHAR
-(255) NOT NULL,
-       partner_email VARCHAR
-(255) NOT NULL,
-       pledge VARCHAR
-(500) NOT NULL,
+       accountability_partner VARCHAR(255) NOT NULL,
+       partner_email VARCHAR(255) NOT NULL,
+       pledge VARCHAR(500) NOT NULL,
        start_date DATE,
        user_id INT, 
-       FOREIGN KEY
-(user_id) REFERENCES users
-(id),
+       FOREIGN KEY(user_id) REFERENCES users(id),
        completed BOOLEAN,
-       PRIMARY KEY
-(id)
+       partner_validation VARCHAR,
+       PRIMARY KEY(id)
 );
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
