@@ -61,3 +61,7 @@ INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
     ("successfully land an airplane", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");
+INSERT INTO goals
+    (goal, deadline, accountability_partner, partner_email, pledge, start_date, completed, user_id)
+VALUES
+    ("get first place in dance competition", "2018-10-03", "Long", "l@gmail.com", "pay $250 for another dance class with L", "2018-09-01", True, 2);
