@@ -53,6 +53,7 @@
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
 {% if goal_objs_and_editability %}
 {% for goal_obj in goal_objs_and_editability %}
+{% if goal_obj[0].completed != 1 %}
 <br>
 <div role="list" class="ui divided middle aligned list">
   <div role="listitem" class="item">
@@ -86,6 +87,7 @@
 	  <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
 	  <p>by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!</p>
 	  <div class="progress">
+
 	    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ goal_obj[3] }}%" aria-valuenow="{{ goal_obj[3] }}" aria-valuemin="10" aria-valuemax="100"></div>
 	  </div>
 	  {% if goal_obj[2] == 1 %}
@@ -99,8 +101,34 @@
 </div>
 
 <!-- WRITE 'SAVED' OR 'DELETED' ON BUTTON CLICK -->
-<div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br><br>
+<div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br>
+{% endif %}
 {% endfor %}
 {% endif %}
+
+<!-- INSPIRATION SECTION -->
+<div class="inspiration"><h1>Congrats! Your Completed Goals</h1></div><br>
+<div class="row">
+{% if goal_objs_and_editability %}
+{% for goal_obj in goal_objs_and_editability %}
+{% if goal_obj[0].completed == 1 %}
+<div class="col-10">
+  <div id="deleted{{goal_obj[0].id}}">
+    <h3 class="goal">
+      {{ goal_obj[0].goal }}
+    </h3>
+    <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
+    <p>by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!</p>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ goal_obj[3] }}%" aria-valuenow="{{ goal_obj[3] }}" aria-valuemin="10" aria-valuemax="100"></div>
+    </div>
+  </div>
+</div>
+<div class="col-2"><img src="../static/celebrate_icon.png" alt="yay!" style="width:60px; height:60px;"></div>
+<br>
+{% endif %}
+{% endfor %}
+{% endif %}
+</div>
 
 {% endblock %}
