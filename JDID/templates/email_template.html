@@ -1,0 +1,13 @@
+<p>Dear {{ goal.accountability_partner }},</p>
+<table>
+    <tr valign="top">
+        <td>It's now the deadline. Has {{ user.first_name }} reached their goal to {{ goal.goal }}?</td>
+        <td>We suggest making the evaluation first before clicking on the link below.</td>
+        <td>
+            <a href="{{ url_for('confirm_completion', goal_id=goal.id, _external=True) }}">{{ goal.goal }}</a><br />
+        </td>
+    </tr>
+</table>
+
+<p>Regards,</p>
+<p>The <code>JDID</code> staff</p>

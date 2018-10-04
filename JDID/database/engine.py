@@ -51,7 +51,7 @@ class DBStorage():
 
     def all(self):
         """
-           return all entries in db
+           return all goal entries in db
         """
         goal_dic = {}
         for obj in self.__session.query(Goal).all():
@@ -64,7 +64,7 @@ class DBStorage():
            count total number of entries in db; start with dummy base 2750
         """
         total = 2750
-        for obj in self.__session.query(Goal).all():
+        for _ in self.__session.query(Goal).all():
             total += 1
         return total
 

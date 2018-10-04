@@ -13,8 +13,7 @@ from flask import Flask
 from flask_mail import Message, Mail
 from JDID import app
 import os
-
-mail = Mail(app)
+from threading import Thread
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -61,43 +60,31 @@ def progress_percentage(goal_obj):
     return (int(s.split(".")[0]))
 
 
-def email_goal_logged():
+def email_goal_logged(user, goal):
     """emails accountability partner friend's new goal"""
     msg = Message('Hello from Just Do It Dude!', sender=(
-        os.environ.get('MY_EMAIL')), recipients=[partner_email])
-    INFORM_GOAL_LOGGED = "Dear " + accountability_partner + ",\nWoohoo! Starting now, one of your friends has a goal to " + goal + " by " + deadline + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'\nWe'll email you again on their deadline to ask you to confirm if they've succeeded!\nLove,\nAmy and Melissa from Just Do It Dude!"
+        os.environ.get('MAIL_USERNAME')), recipients=[goal.partner_email], bcc=user.email)
+    INFORM_GOAL_LOGGED = "Dear " + goal.accountability_partner + ",\n\nWoohoo! Starting now, " + user.first_name + " has a goal to " + goal.goal + " by " + str(goal.deadline) + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + goal.pledge + "!'\n\nWe'll email you again on their deadline to ask you to confirm if they've succeeded!\n\nLove,\nAmy and Melissa from Just Do It Dude!"
     msg.body = INFORM_GOAL_LOGGED
-    mail.send(msg)
+    with app.app_context():
+        mail.send(msg)
 
 
-def email_goal_updated():
+def email_goal_updated(user, goal):
     """emails accountability partner friend's updated goal"""
     msg = Message('Hello from Just Do It Dude!', sender=(
-        os.environ.get('MY_EMAIL')), recipients=[partner_email])
-    INFORM_GOAL_UPDATED = "Hello again " + accountability_partner + ",\nWe thought you'd like to know that one of your friends modified their goal. Now, they plan to " + goal + " by " + deadline + ". Remember that they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + pledge + "!'\nWe'll email you again on their deadline to ask you to confirm if they've succeeded!\nLove,\nAmy and Melissa from Just Do It Dude!"
+        os.environ.get('MAIL_USERNAME')), recipients=[goal.partner_email], bcc=user.email)
+    INFORM_GOAL_UPDATED = "Hello again " + goal.accountability_partner + ",\n\nWe thought you'd like to know that " + user.first_name + " has modified their goal. Now, they plan to " + goal.goal + " by " + str(goal.deadline) + ". Remember that they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + goal.pledge + "!'\n\nWe'll email you again on their deadline to ask you to confirm if they've succeeded!\nLove,\nAmy and Melissa from Just Do It Dude!"
     msg.body = INFORM_GOAL_UPDATED
-    mail.send(msg)
+    with app.app_context():
+        mail.send(msg)
 
 
-def email_goal_deleted():
+def email_goal_deleted(user, goal):
     """emails accountability partner friend's deleted goal"""
     msg = Message('Hello from Just Do It Dude!', sender=(
-        os.environ.get('MY_EMAIL')), recipients=[partner_email])
-    INFORM_GOAL_DELETED = "Dear " + accountability_partner + ",\nThis is to notify you that your friend has unfortunately dropped their goal to " + goal + " by " + deadline + ". In doing so, they've forfeited their pledge. Since they've asked that you hold them accountable, they've promised you this: " + pledge + ". Do check in with them!\nLove,\nAmy and Melissa from Just Do It Dude!"    
+        os.environ.get('MAIL_USERNAME')), recipients=[goal.partner_email], bcc=user.email)
+    INFORM_GOAL_DELETED = "Dear " + goal.accountability_partner + ",\n\nThis is to notify you that " + user.first_name + " has unfortunately dropped their goal to " + goal.goal + " by " + str(goal.deadline) + ". In doing so, they've forfeited their pledge. Since they've asked that you hold them accountable, they've promised you this: " + goal.pledge + ". Do check in with them!\n\nLove,\nAmy and Melissa from Just Do It Dude!"    
     msg.body = INFORM_GOAL_DELETED
-    mail.send(msg)
-
-
-def email_goal_confirmation(subj, sender, recipients, text_body, html_body):
-    """emails accountability partner to check-in goal for deadline"""
-    print('did I make it here?')
-    print(subj)
-    print(sender)
-    print(recipients)
-    print(text_body)
-    print(html_body)
-    msg = Message(subject=subj, sender=sender, recipients=[recipients], bcc=sender)
-    # msg.body = text_body
-    msg.html = html_body
     with app.app_context():
         mail.send(msg)
