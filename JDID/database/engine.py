@@ -107,7 +107,6 @@ class DBStorage():
         try:
             print('user_id', user_id)
             obj = self.__session.query(User).filter_by(id=user_id).first()
-            print(obj)
             return obj
         except TypeError:
             print('Error at engine.get_user_by_id X____X')

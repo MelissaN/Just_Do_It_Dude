@@ -9,11 +9,9 @@
 <!-- FUNCTION TO UPDATE AND DELETE GOALS -->
 <script>
   function save_to_DB(goal_id) {
-    //  let elem = this;
-    //  let id = elem.getAttribute('id');
     let editElem = document.getElementById("edit" + goal_id);
     let updated_data = editElem.innerHTML + ",id=" + goal_id;
-    //  console.log("updated_data is " + updated_data)
+    //console.log("updated_data is " + updated_data)
 
     let xhttp = new XMLHttpRequest();
     let url = "http://localhost:5000/dashboard"
@@ -32,7 +30,7 @@
   function delete_from_DB(goal_id) {
     let editElem = document.getElementById("edit" + goal_id);
     let goal_to_delete = goal_id;
-    //  console.log('goal_to_delete is ' + goal_to_delete)
+    //console.log('goal_to_delete is ' + goal_to_delete)
 
     let xhttp = new XMLHttpRequest();
     let url = "http://localhost:5000/dashboard"

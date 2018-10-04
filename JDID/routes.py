@@ -22,15 +22,6 @@ app.url_map.strict_slashes = False
 
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
-#
-#app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-#app.config['MAIL_PORT'] = 465
-#app.config['MAIL_USERNAME'] = os.environ.get('MY_EMAIL')
-#app.config['MAIL_PASSWORD'] = os.environ.get('MY_EMAIL_PASSWORD')
-#app.config['MAIL_USE_TLS'] = False
-#app.config['MAIL_USE_SSL'] = True
-#mail = Mail(app)
-#
 
 @app.route('/', methods=['GET'])
 def index():
@@ -120,6 +111,7 @@ def dashboard():
             goal_obj = storage.get_goal_by_id(goal_id)
             setattr(goal_obj, 'user_id', current_user.id)
             storage.save(goal_obj)
+            session['cookie'] = None
             helper_methods.email_goal_logged(current_user, goal_obj)
     except KeyError:
         pass
@@ -139,20 +131,20 @@ def update():
     # codes for editting goals
     req = request.form
     if request.method == 'POST':
-        updated_line = req.get('updated_goal').split(',id=')[0]
-        updated_goal = updated_line.split('</span>')[1]
-        goal_id = req.get('updated_goal').split(',id=')[1]
+        updated_line = req.get('updated_goal').split('</span>')[1]
+        updated_goal = updated_line.split(',id=')[0]
+        goal_id = updated_line.split(',id=')[1]
         for rec in storage.all().values():
             if str(rec.id) == goal_id:
                 setattr(rec, 'goal', updated_goal)
                 storage.save(rec)
-                helper_methods.email_goal_updated(current_user, rec)
+                helper_methods.email_goal_updated(rec)
     else:
         goal_to_delete = req.get('goal_to_delete')
         for rec in storage.all().values():
             if str(rec.id) == goal_to_delete:
+                helper_methods.email_goal_deleted(rec)
                 storage.delete(rec)
-                helper_methods.email_goal_deleted(current_user, rec)
     return("just updated/deleted")
 
 
