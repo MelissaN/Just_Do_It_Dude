@@ -17,20 +17,20 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE
 IF NOT EXISTS users
 (
-       id INT UNIQUE NOT NULL AUTO_INCREMENT,
+       id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
        first_name VARCHAR(255) NOT NULL,
        password VARCHAR(255) NOT NULL,
-       email VARCHAR(255) NOT NULL, PRIMARY KEY(id)
+       email VARCHAR(255) NOT NULL
 );
 INSERT INTO users
-    (first_name, password, email)
+    (id, first_name, password, email)
 VALUES
-    ("Melissa", "testpw", "cheersmelissa@gmail.com");
+    (0, "Sample_first_name", "not_hashed_sample", "sample@gmail.com");
 
 CREATE TABLE
 IF NOT EXISTS goals
 (
-       id INT UNIQUE NOT NULL AUTO_INCREMENT,
+       id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
        goal VARCHAR(500) NOT NULL,
        deadline DATE,
        accountability_partner VARCHAR(255) NOT NULL,
@@ -39,14 +39,12 @@ IF NOT EXISTS goals
        start_date DATE,
        user_id INT, 
        FOREIGN KEY(user_id) REFERENCES users(id),
-       completed BOOLEAN,
-       partner_validation VARCHAR,
-       PRIMARY KEY(id)
+       completed BOOLEAN
 );
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("find a job", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-01");
+    ("get first place in dance competition", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-01");
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
@@ -55,9 +53,9 @@ VALUES
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("launch 3 apps", "2019-01-20", "Melissa", "cheersmelissa@gmail.com", "do 100 push ups while Suzie records", "2018-08-10");
+    ("launch 3 apps in Apple store in 3 months", "2019-01-20", "Melissa", "cheersmelissa@gmail.com", "do 100 push ups while Suzie records", "2018-08-10");
 
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("successfully land an airplane", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");
+    ("successfully land an airplane on top of a building", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");

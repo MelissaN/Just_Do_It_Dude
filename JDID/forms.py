@@ -26,11 +26,11 @@ class GoalForm(FlaskForm):
     submit = SubmitField('Set goal!')
 
 #    def validate_partner_email(self, partner_email):
-#        # user = storage.get_user_by_email(email.data)
+#        # Current_user not passed in - would have to handle logins w/ session cookie as well
 #        if partner_email.data == current_user.email:
 #            raise ValidationError('You cannot hold yourself accountable!')
 #        return
-#
+
 
 class RegistrationForm(FlaskForm):
     """

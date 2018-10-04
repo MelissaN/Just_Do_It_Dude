@@ -87,13 +87,15 @@
 
 <!-- SHOW TOTAL NUMBER OF USER SUBMITTED GOALS -->
 <div class="total_count text-center">
-    <h3>{% if count %}{{ count }}</h3>
+    <h1>{% if count %}{{ count }}</h1>
     <h6> pledges so far!</h6>{% endif %}
 </div>
 
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
+<div class="inspiration"><h1>Current Pledges</h1></div>
 {% if goals_and_days_passed %}
 {% for rec in goals_and_days_passed %}
+{% if rec[0].completed != 1 %}
 <br><br>
 <div class="text-center shadow-sm p-1 rounded">
     <div class="container-fluid">
@@ -103,16 +105,69 @@
             </div>
             <div class="col-sm-10">
                 <p>Someone has pledged to <span class="goal"><b>{{rec[0].goal}}</b></span> by <b>{{rec[0].deadline}}</b> or <b>{{rec[0].pledge}}</b>!</p>
-                <h6 class="goal_status">goal set {{ rec[1] }} days ago</h6>
+                <h6 class="goal_status">Created {{ rec[1] }} days ago</h6>
             </div>
         </div>
     </div>
-</div>
+</div><br>
+{% endif %}
 {% endfor %}
 {% endif %}
 
 <!-- INSPIRATION SECTION -->
-<div class="inspiration">Inspiration Section TBD</div>
-<div class="inspiration">Inspiration Section PHOTOS?</div>
+<div class="inspiration"><h1>Recent Success Stories</h1></div>
+{% if goals_and_days_passed %}
+{% for rec in goals_and_days_passed %}
+{% if rec[0].completed == 1 %}
+<div class="text-center shadow-sm p-1 rounded">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-10">
+              <p>Woohoo! <span class="goal"><b>{{rec[0].goal}}?</b></span> Done!</p>
+                <h6 class="goal_status">goal ended {{ rec[0].deadline }}</h6>
+            </div>
+            <div class="col-sm-2">
+                <img src="../static/celebrate_icon.png" alt="yay!" style="width:60px; height:60px;">
+            </div>
+        </div>
+    </div>
+</div><br>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+<!-- INSPIRATION SECTION -->
+<div class="inspiration"><h1>Most Viewed Success Stories</h1></div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <div class="thumbnail">
+	<img src="../static/food.jpg" style="width:100% height:70%"><div class="caption"><p class="text-center">10 day keto challenge</p></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="thumbnail">
+	<img src="../static/hike.jpg" style="width:100%"><div class="caption"><p class="text-center">Finally backpack across Europe before the end of this year</p></div>
+	  </div>
+    </div>
+    <div class="col-md-3">
+      <div class="thumbnail">
+	<img src="../static/travel.jpg" style="width:100%"><div class="caption"><p class="text-center">Save $1500 for Venice trip</p></div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="thumbnail">
+	<img src="../static/app.jpg" style="width:100%"><div class="caption"><p class="text-center">Deploy 10 apps in 10 days on Apple Store</p></div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="thumbnail">
+	<img src="../static/tv.jpg" style="width:100%"><div class="caption"><p class="text-center">No watching Silicon Valley until I submit my robotics project</p></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}

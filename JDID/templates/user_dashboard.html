@@ -9,11 +9,9 @@
 <!-- FUNCTION TO UPDATE AND DELETE GOALS -->
 <script>
   function save_to_DB(goal_id) {
-    //  let elem = this;
-    //  let id = elem.getAttribute('id');
     let editElem = document.getElementById("edit" + goal_id);
     let updated_data = editElem.innerHTML + ",id=" + goal_id;
-    //  console.log("updated_data is " + updated_data)
+    //console.log("updated_data is " + updated_data)
 
     let xhttp = new XMLHttpRequest();
     let url = "http://localhost:5000/dashboard"
@@ -32,7 +30,7 @@
   function delete_from_DB(goal_id) {
     let editElem = document.getElementById("edit" + goal_id);
     let goal_to_delete = goal_id;
-    //  console.log('goal_to_delete is ' + goal_to_delete)
+    //console.log('goal_to_delete is ' + goal_to_delete)
 
     let xhttp = new XMLHttpRequest();
     let url = "http://localhost:5000/dashboard"
@@ -48,25 +46,43 @@
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("goal_to_delete=" + goal_to_delete);
   }
+
+  function confirm_delete(goal_id) {
+    if (confirm("Are you sure you want to delete? Press cancel if not.")) {
+      delete_from_DB(goal_id);
+    }
+  }
+
+  function add_goal() {
+    const jdidUrl = `${location.origin}`;
+    location.href = jdidUrl + `/`;
+  }
 </script>
 
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
+<br><div class="inspiration"><h1>Current Goals</h1></div><br>
+
+<center>
+  <button class="ui yellow button" role="button" onclick="add_goal()">
+    Add Goal
+  </button>
+</center>
+
 {% if goal_objs_and_editability %}
 {% for goal_obj in goal_objs_and_editability %}
+{% if goal_obj[0].completed != 1 %}
 <br>
 <div role="list" class="ui divided middle aligned list">
   <div role="listitem" class="item">
     <!-- UPDATE/DELETE BUTTONS -->
     {% if goal_obj[1] == True %}
-    <!--  <input id="delete_button" type="button" value="Update" onclick="save_to_DB({{goal_obj[0].id}})" /> -->
-    <!--  <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" /> -->
     <div class="right floated content">
       <div class="ui buttons">
         <button class="ui button" role="button" onclick="save_to_DB({{goal_obj[0].id}})">
           Update
         </button>
         <div class="or"></div>
-        <button class="ui button" role="button" onclick="delete_from_DB({{goal_obj[0].id}})">
+        <button class="ui button" role="button" onclick="confirm_delete({{goal_obj[0].id}})">
           Delete
         </button>
       </div>
@@ -86,6 +102,7 @@
 	  <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
 	  <p>by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!</p>
 	  <div class="progress">
+
 	    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ goal_obj[3] }}%" aria-valuenow="{{ goal_obj[3] }}" aria-valuemin="10" aria-valuemax="100"></div>
 	  </div>
 	  {% if goal_obj[2] == 1 %}
@@ -99,8 +116,34 @@
 </div>
 
 <!-- WRITE 'SAVED' OR 'DELETED' ON BUTTON CLICK -->
-<div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br><br>
+<div id="status{{goal_obj[0].id}}" class="goal_update">&nbsp;</div><br>
+{% endif %}
 {% endfor %}
 {% endif %}
+
+<!-- INSPIRATION SECTION -->
+<br><div class="inspiration"><h1>Completed Goals</h1></div><br>
+<div class="row">
+{% if goal_objs_and_editability %}
+{% for goal_obj in goal_objs_and_editability %}
+{% if goal_obj[0].completed == 1 %}
+<div class="col-10">
+  <div id="deleted{{goal_obj[0].id}}">
+    <h3 class="goal">
+      {{ goal_obj[0].goal }}
+    </h3>
+    <!-- SUMMARY OF GOAL: DEADLINE, PLEDGE, PROGRESS BAR -->
+    <p>by {{goal_obj[0].deadline}} or else {{goal_obj[0].pledge}}!</p>
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ goal_obj[3] }}%" aria-valuenow="{{ goal_obj[3] }}" aria-valuemin="10" aria-valuemax="100"></div>
+    </div>
+  </div>
+</div>
+<div class="col-2"><img src="../static/celebrate_icon.png" alt="yay!" style="width:60px; height:60px;"></div>
+<br>
+{% endif %}
+{% endfor %}
+{% endif %}
+</div>
 
 {% endblock %}
