@@ -15,6 +15,7 @@ from JDID import app
 import os
 from threading import Thread
 
+
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
@@ -27,7 +28,7 @@ mail = Mail(app)
 def logged_in(current_user):
     """returns True if user is logged in"""
     try:
-        uin = current_user.id
+        _ = current_user.id
         return True
     except:
         return False
