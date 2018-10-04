@@ -49,6 +49,7 @@
 </script>
 
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
+<br><div class="inspiration"><h1>Current Goals</h1></div><br>
 {% if goal_objs_and_editability %}
 {% for goal_obj in goal_objs_and_editability %}
 {% if goal_obj[0].completed != 1 %}
@@ -105,7 +106,7 @@
 {% endif %}
 
 <!-- INSPIRATION SECTION -->
-<div class="inspiration"><h1>Congrats! Your Completed Goals</h1></div><br>
+<br><div class="inspiration"><h1>Completed Goals</h1></div><br>
 <div class="row">
 {% if goal_objs_and_editability %}
 {% for goal_obj in goal_objs_and_editability %}
