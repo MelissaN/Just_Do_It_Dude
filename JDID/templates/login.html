@@ -31,8 +31,9 @@
         {% endif %}
       </div>
     </fieldset>
-    <div class="form-group">
+    <div class="form-group text-center">
       {{ form.submit(class="btn btn-outline-info") }}
+      <p>or <a href="{{ url_for('register') }}">create an account</a></p>
     </div>
   </form>
 </div>

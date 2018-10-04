@@ -3,13 +3,22 @@
     height: 500px;
 }
 .logo {
+    font-size: 3em;
     font: bold;
     background-color: black;
     color: white;
     border-radius: 5px;
 }
+.red {
+    color: red;
+}
 .total_count {
     color: red;
+}
+.goal {
+    color: blue;
+    font-style: italic;
+    font: bold;
 }
 .goal_status {
     color: grey;

@@ -60,4 +60,4 @@ VALUES
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("sucessfully land an airplane", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");
+    ("successfully land an airplane", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");

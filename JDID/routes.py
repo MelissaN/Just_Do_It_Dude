@@ -28,9 +28,8 @@ def index():
     uin = helper_methods.logged_in(current_user)
     form = GoalForm()
     count = storage.count()
-    all_records = storage.all()
     goals_and_days_passed = list()
-    for rec in all_records.values():
+    for rec in storage.all().values():
         goals_and_days_passed.append((rec, helper_methods.days_passed(rec)))
     return render_template("landing.html", uin=uin, form=form, count=count, goals_and_days_passed=goals_and_days_passed)
 
@@ -118,7 +117,7 @@ def dashboard():
         goal_objs_and_editability.append(
             (rec, helper_methods.is_goal_editable(rec),
              helper_methods.days_passed(rec), helper_methods.progress_percentage(rec)))
-    return render_template('user_dashboard.html', uin=uin, title_page='Dashboard',
+    return render_template('user_dashboard.html', uin=uin, user=user, title_page='Dashboard',
                            goal_objs_and_editability=goal_objs_and_editability)
 
 
@@ -128,7 +127,8 @@ def update():
     # codes for editting goals
     req = request.form
     if request.method == 'POST':
-        updated_goal = req.get('updated_goal').split(',id=')[0]
+        updated_line = req.get('updated_goal').split(',id=')[0]
+        updated_goal = updated_line.split('</span>')[1]
         goal_id = req.get('updated_goal').split(',id=')[1]
         for rec in storage.all().values():
             if str(rec.id) == goal_id:
