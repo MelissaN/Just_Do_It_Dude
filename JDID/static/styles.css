@@ -25,6 +25,10 @@
     color: grey;
     font-style: italic;
 }
+.goal_update {
+    color: red;
+    font-style: italic;
+}
 .inspiration {
     margin-top: 10px;
     height: 40px;

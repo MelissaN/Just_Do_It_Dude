@@ -46,10 +46,28 @@
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("goal_to_delete=" + goal_to_delete);
   }
+
+  function confirm_delete(goal_id) {
+    if (confirm("Are you sure you want to delete? Press cancel if not.")) {
+      delete_from_DB(goal_id);
+    }
+  }
+
+  function add_goal() {
+    const jdidUrl = `${location.origin}`;
+    location.href = jdidUrl + `/`;
+  }
 </script>
 
 <!-- POPULATE PAGE WITH SUMMARY OF SUBMITTED GOALS -->
 <br><div class="inspiration"><h1>Current Goals</h1></div><br>
+
+<center>
+  <button class="ui yellow button" role="button" onclick="add_goal()">
+    Add Goal
+  </button>
+</center>
+
 {% if goal_objs_and_editability %}
 {% for goal_obj in goal_objs_and_editability %}
 {% if goal_obj[0].completed != 1 %}
@@ -58,15 +76,13 @@
   <div role="listitem" class="item">
     <!-- UPDATE/DELETE BUTTONS -->
     {% if goal_obj[1] == True %}
-    <!--  <input id="delete_button" type="button" value="Update" onclick="save_to_DB({{goal_obj[0].id}})" /> -->
-    <!--  <input id="update_button" type="button" value="Delete" onclick="delete_from_DB({{goal_obj[0].id}})" /> -->
     <div class="right floated content">
       <div class="ui buttons">
         <button class="ui button" role="button" onclick="save_to_DB({{goal_obj[0].id}})">
           Update
         </button>
         <div class="or"></div>
-        <button class="ui button" role="button" onclick="delete_from_DB({{goal_obj[0].id}})">
+        <button class="ui button" role="button" onclick="confirm_delete({{goal_obj[0].id}})">
           Delete
         </button>
       </div>
@@ -100,7 +116,7 @@
 </div>
 
 <!-- WRITE 'SAVED' OR 'DELETED' ON BUTTON CLICK -->
-<div id="status{{goal_obj[0].id}}" class="goal_status">&nbsp;</div><br>
+<div id="status{{goal_obj[0].id}}" class="goal_update">&nbsp;</div><br>
 {% endif %}
 {% endfor %}
 {% endif %}
