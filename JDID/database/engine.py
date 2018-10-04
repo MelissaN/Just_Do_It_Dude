@@ -51,7 +51,7 @@ class DBStorage():
 
     def all(self):
         """
-           return all entries in db
+           return all goal entries in db
         """
         goal_dic = {}
         for obj in self.__session.query(Goal).all():
@@ -64,7 +64,7 @@ class DBStorage():
            count total number of entries in db; start with dummy base 2750
         """
         total = 2750
-        for obj in self.__session.query(Goal).all():
+        for _ in self.__session.query(Goal).all():
             total += 1
         return total
 
@@ -105,7 +105,9 @@ class DBStorage():
             return user info
         """
         try:
+            print('user_id', user_id)
             obj = self.__session.query(User).filter_by(id=user_id).first()
+            print(obj)
             return obj
         except TypeError:
             print('Error at engine.get_user_by_id X____X')

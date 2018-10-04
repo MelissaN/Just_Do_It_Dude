@@ -22,15 +22,15 @@ app.url_map.strict_slashes = False
 
 cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = os.environ.get('MY_EMAIL')
-app.config['MAIL_PASSWORD'] = os.environ.get('MY_EMAIL_PASSWORD')
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
-
+#
+#app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+#app.config['MAIL_PORT'] = 465
+#app.config['MAIL_USERNAME'] = os.environ.get('MY_EMAIL')
+#app.config['MAIL_PASSWORD'] = os.environ.get('MY_EMAIL_PASSWORD')
+#app.config['MAIL_USE_TLS'] = False
+#app.config['MAIL_USE_SSL'] = True
+#mail = Mail(app)
+#
 
 @app.route('/', methods=['GET'])
 def index():
@@ -59,7 +59,7 @@ def create_goal():
             setattr(obj, 'user_id', current_user.id)
             storage.save(obj)
             flash('Successfully made a commitment!', 'success')
-            # helper_methods.email_goal_logged()
+            helper_methods.email_goal_logged(current_user, obj)
             return redirect(url_for('dashboard'))
         else:
             session['cookie'] = obj.id
@@ -114,12 +114,15 @@ def logout():
 def dashboard():
     """return user homepage with their goals listed"""
     uin = helper_methods.logged_in(current_user)
-    if session['cookie']:
-        goal_id = session['cookie']
-        goal_obj = storage.get_goal_by_id(goal_id)
-        setattr(goal_obj, 'user_id', current_user.id)
-        storage.save(goal_obj)
-        # helper_methods.email_goal_logged()
+    try:
+        if session['cookie']:
+            goal_id = session['cookie']
+            goal_obj = storage.get_goal_by_id(goal_id)
+            setattr(goal_obj, 'user_id', current_user.id)
+            storage.save(goal_obj)
+            helper_methods.email_goal_logged(current_user, goal_obj)
+    except KeyError:
+        pass
     user = storage.get_user_by_id(current_user.id)
     goal_objs_and_editability = list()
     for rec in user.goals:
@@ -143,20 +146,19 @@ def update():
             if str(rec.id) == goal_id:
                 setattr(rec, 'goal', updated_goal)
                 storage.save(rec)
-                # helper_methods.email_goal_updated()
+                helper_methods.email_goal_updated(current_user, rec)
     else:
         goal_to_delete = req.get('goal_to_delete')
         for rec in storage.all().values():
             if str(rec.id) == goal_to_delete:
-                msg_goal_deleted = "=( Someone has just forfeited their pledge and will {} to {}".format(
-                    rec.pledge, rec.accountability_partner)
                 storage.delete(rec)
-                # helper_methods.email_goal_deleted()
+                helper_methods.email_goal_deleted(current_user, rec)
     return("just updated/deleted")
 
 
 @app.route("/completion/<goal_id>", methods=['GET'])
 def confirm_completion(goal_id):
+    """return page for accountability partner to confirm yes or no"""
     goal_obj = storage.get_goal_by_id(goal_id)
     user = storage.get_user_by_id(goal_obj.user_id)
     return render_template("completion.html", user=user, goal=goal_obj)
@@ -164,6 +166,7 @@ def confirm_completion(goal_id):
 
 @app.route("/completion_update/<goal_id>", methods=['GET'])
 def completion_submit(goal_id):
+    """store the completion status in database's goal object"""
     is_completed = request.args.get('complete', None)
     goal_obj = storage.get_goal_by_id(goal_id)
     if goal_obj:
@@ -178,7 +181,8 @@ def not_found(error):
     """return custom 404 page
        return render_template("custom_404.html")
     """
-    return ({error: "Not found"}, 404)
+    return ({error: "Page Not Found"}, 404)
+
 
 
 @app.after_request
