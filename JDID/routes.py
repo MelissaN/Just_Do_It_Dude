@@ -173,12 +173,12 @@ def completion_submit(goal_id):
     return redirect(url_for("index"))
 
 
-# @app.errorhandler(404)
-# def not_found(error):
-    # """return custom 404 page
-    #    return render_template("custom_404.html")
-    # """
-    # pass
+@app.errorhandler(404)
+def not_found(error):
+    """return custom 404 page
+       return render_template("custom_404.html")
+    """
+    return ({error: "Not found"}, 404)
 
 
 @app.after_request
