@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 
 # security against modifying cookies and CSRF attacks
-app.config['SECRET_KEY'] = 'tehe'
+app.config['SECRET_KEY'] = 'ed19db85f910d4624779eda84eb9bc9b15c4a682'
 
 
 login_user = LoginManager(app)

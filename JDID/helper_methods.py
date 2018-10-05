@@ -37,7 +37,6 @@ def logged_in(current_user):
 def is_goal_editable(goal_obj):
     """return True if goal is longer than 5 days and less than a quarter towards deadline"""
     today = date.today()
-    # print("goal:", goal_obj.goal, " start: ", goal_obj.start_date, " deadline: ", goal_obj.deadline, " duration: ", (goal_obj.deadline - goal_obj.start_date).days, " edit pd: ", (goal_obj.deadline - goal_obj.start_date).days//4)
     try:
         duration = (goal_obj.deadline - goal_obj.start_date).days
         editable_period = (duration//4)
@@ -50,8 +49,6 @@ def is_goal_editable(goal_obj):
 
 def days_passed(goal_obj):
     """return number of days passed since goal creation"""
-    # print("goal: ", goal_obj.goal, " start: ", goal_obj.start_date, " deadline: ", goal_obj.deadline, " duration: ", (goal_obj.deadline - goal_obj.start_date).days, " edit pd: ", (goal_obj.deadline - goal_obj.start_date).days//4, " days passed: ", (date.today() - goal_obj.start_date).days)
-    # print("days_passed/duration = ", ((((date.today() - goal_obj.start_date).days) / (goal_obj.deadline - goal_obj.start_date).days) * 100))
     return ((date.today() - goal_obj.start_date).days)
 
 
