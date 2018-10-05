@@ -28,7 +28,7 @@ with app.app_context(), app.test_request_context(base_url='http://35.221.52.120'
     #TODO: change back recipient email to partner email after testing
     today = str(date.today())
     for rec in storage.all().values():
-        if str(rec.deadline) == "2018-10-24":
+        if str(rec.deadline) == today:
             user_obj = storage.get_user_by_id(rec.user_id)
             subject = "It's time to check up on your friend!"
             sender = os.environ.get('MAIL_USERNAME')
