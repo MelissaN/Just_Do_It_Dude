@@ -42,20 +42,20 @@ IF NOT EXISTS goals
        completed BOOLEAN
 );
 INSERT INTO goals
-    (goal, deadline, accountability_partner, partner_email, pledge, start_date)
+    (goal, deadline, accountability_partner, partner_email, pledge, start_date, user_id)
 VALUES
-    ("get first place in dance competition", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-01");
+    ("get first place in dance competition", "2018-11-20", "Amy", "amy.tai0120@gmail.com", "treat Amy to Fogo De Chao", "2018-09-01", 0);
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("run the upcoming 5K marathon", "2019-10-20", "Melissa", "cheersmelissa@gmail.com", "treat Holberton staff to first round of drinks", "2018-09-10");
+    ("run the upcoming 5K marathon", "2019-10-20", "Melissa", "cheersmelissa@gmail.com", "treat Holberton staff to first round of drinks", "2018-09-10", 0);
 
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("launch 3 apps in Apple store in 3 months", "2019-01-20", "Melissa", "cheersmelissa@gmail.com", "do 100 push ups while Suzie records", "2018-08-10");
+    ("launch 3 apps in Apple store in 3 months", "2019-01-20", "Melissa", "cheersmelissa@gmail.com", "do 100 push ups while Suzie records", "2018-08-10", 0);
 
 INSERT INTO goals
     (goal, deadline, accountability_partner, partner_email, pledge, start_date)
 VALUES
-    ("successfully land an airplane on top of a building", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20");
+    ("successfully land an airplane on top of a building", "2019-05-20", "Melissa", "cheersmelissa@gmail.com", "buy round trip tickets to Brazil for all my classmates at Fly Academy", "2018-09-20", 0);

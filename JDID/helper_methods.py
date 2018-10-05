@@ -37,7 +37,6 @@ def logged_in(current_user):
 def is_goal_editable(goal_obj):
     """return True if goal is longer than 5 days and less than a quarter towards deadline"""
     today = date.today()
-    # print("goal:", goal_obj.goal, " start: ", goal_obj.start_date, " deadline: ", goal_obj.deadline, " duration: ", (goal_obj.deadline - goal_obj.start_date).days, " edit pd: ", (goal_obj.deadline - goal_obj.start_date).days//4)
     try:
         duration = (goal_obj.deadline - goal_obj.start_date).days
         editable_period = (duration//4)
@@ -50,8 +49,6 @@ def is_goal_editable(goal_obj):
 
 def days_passed(goal_obj):
     """return number of days passed since goal creation"""
-    # print("goal: ", goal_obj.goal, " start: ", goal_obj.start_date, " deadline: ", goal_obj.deadline, " duration: ", (goal_obj.deadline - goal_obj.start_date).days, " edit pd: ", (goal_obj.deadline - goal_obj.start_date).days//4, " days passed: ", (date.today() - goal_obj.start_date).days)
-    # print("days_passed/duration = ", ((((date.today() - goal_obj.start_date).days) / (goal_obj.deadline - goal_obj.start_date).days) * 100))
     return ((date.today() - goal_obj.start_date).days)
 
 
@@ -68,9 +65,7 @@ def email_goal_logged(user, goal):
     INFORM_GOAL_LOGGED = "Dear " + goal.accountability_partner + ",\n\nWoohoo! Starting now, " + user.first_name + " has a goal to " + goal.goal + " by " + str(goal.deadline) + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + goal.pledge + "!'\n\nWe'll email you again on their deadline to ask you to confirm if they've succeeded!\n\nLove,\nAmy and Melissa from Just Do It Dude!"
     msg.body = INFORM_GOAL_LOGGED
     with app.app_context():
-        print("emailing at goal creation in app_context")
         mail.send(msg)
-    print("emailed at goal creation")
 
 
 def email_goal_updated(goal):
@@ -91,3 +86,11 @@ def email_goal_deleted(goal):
     msg.body = INFORM_GOAL_DELETED
     with app.app_context():
         mail.send(msg)
+
+
+def email_goal_confirmation(subject, sender, recipients, body, html):
+    """emails accountability partner friend's confirmation"""
+    msg = Message(subject=subject, sender=sender, recipients=[recipients])
+    msg.body = body
+    msg.html = html
+    mail.send(msg)

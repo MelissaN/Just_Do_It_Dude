@@ -105,7 +105,6 @@ class DBStorage():
             return user info
         """
         try:
-            print('user_id', user_id)
             obj = self.__session.query(User).filter_by(id=user_id).first()
             return obj
         except TypeError:
