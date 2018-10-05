@@ -1,0 +1,10 @@
+Dear {{ goal.accountability_partner }},
+
+It's now the deadline. Has {{ user.first_name }} reached their goal to {{ goal.goal }}?
+If they have not completed their goal, they will have to act on their pledge.
+You can evaluate {{ user.first_name }}'s goal completion based on your own metrics, but we encourage honesty and fairness!
+Click link below to confirm:
+    {{ url_for('confirm_completion', goal_id=goal.id, _external=True) }}
+
+<p>Love,</p>
+<p>Amy & Melissa from JDID</p>

@@ -68,9 +68,7 @@ def email_goal_logged(user, goal):
     INFORM_GOAL_LOGGED = "Dear " + goal.accountability_partner + ",\n\nWoohoo! Starting now, " + user.first_name + " has a goal to " + goal.goal + " by " + str(goal.deadline) + ". Even cooler, they've asked that you hold them accountable. If they don't succeed in accomplishing their goal by their deadline, in their own words they've pledged to '" + goal.pledge + "!'\n\nWe'll email you again on their deadline to ask you to confirm if they've succeeded!\n\nLove,\nAmy and Melissa from Just Do It Dude!"
     msg.body = INFORM_GOAL_LOGGED
     with app.app_context():
-        print("emailing at goal creation in app_context")
         mail.send(msg)
-    print("emailed at goal creation")
 
 
 def email_goal_updated(goal):
@@ -91,3 +89,11 @@ def email_goal_deleted(goal):
     msg.body = INFORM_GOAL_DELETED
     with app.app_context():
         mail.send(msg)
+
+
+def email_goal_confirmation(subject, sender, recipients, body, html):
+    """emails accountability partner friend's confirmation"""
+    msg = Message(subject=subject, sender=sender, recipients=[recipients])
+    msg.body = body
+    msg.html = html
+    mail.send(msg)

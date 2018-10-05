@@ -1,10 +1,8 @@
 <p>Dear {{ goal.accountability_partner }},</p><br>
-
-<center>
 <p>It's now the deadline. Has {{ user.first_name }} reached their goal to {{ goal.goal }}?</p>
-<p>We suggest making the evaluation first before clicking on the link below.</p>
-<a href="{{ url_for('confirm_completion', goal_id=goal.id, _external=True) }}">{{ goal.goal }}</a><br>
-</center>
+<p>If they have not completed their goal, they will have to act on their pledge.</p>
+<p>You can evaluate {{ user.first_name }}'s completion based on your own metrics, but we encourage honesty and fairness!</p>
+<p>Click <a href="{{ url_for('confirm_completion', goal_id=goal.id, _external=True) }}">here</a> to confirm.</p><br>
 
-<p>Regards,</p>
-<p>The <code>JDID</code> staff</p>
+<p>Love,</p>
+<p>Amy & Melissa from JDID</p>

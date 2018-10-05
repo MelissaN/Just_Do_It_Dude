@@ -2,8 +2,9 @@
 """Cron job to send emails out to accountability partners at deadline"""
 from JDID import app
 from datetime import date
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from flask_mail import Mail, Message
+from JDID import helper_methods
 from JDID.classes import storage
 import os
 
@@ -19,7 +20,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-with app.app_context():
+with app.app_context(), app.test_request_context(base_url='http://35.221.52.120'):
     """
        Check daily if today is deadline date for any user's goal
        Email accountability partner and have them confirm if goal accomplished
@@ -27,17 +28,13 @@ with app.app_context():
     #TODO: change back recipient email to partner email after testing
     today = str(date.today())
     for rec in storage.all().values():
-        if str(rec.deadline) == "2018-10-06":
-            print("found deadline")
+        if str(rec.deadline) == "2018-10-24":
             user_obj = storage.get_user_by_id(rec.user_id)
             subject = "It's time to check up on your friend!"
             sender = os.environ.get('MAIL_USERNAME')
             recipients = os.environ.get('MAIL_USERNAME')
-            print("sender: ", sender, " recipients: ", recipients)
-            cc = [user_obj.email, "flyaway0120@gmail.com"]
-            body = render_template("email_txt_template.html", user=user_obj, goal=rec)
-            html = render_template("email_template.html", user=user_obj, goal=rec)
-            msg = Message(subject=subject, sender=sender, recipients=[recipients], cc=[cc], body=body, html=html)
-            print("Trying to send to " + rec.partner_email)
-            mail.send(msg)
+            cc = [user_obj.email]
+            helper_methods.email_goal_confirmation(subject, sender, recipients, render_template("email_txt_template.txt", 
+                            user=user_obj, goal=rec), render_template("email_template.html", 
+                            user=user_obj, goal=rec))
             print("Done: One email sent to " + rec.partner_email)
